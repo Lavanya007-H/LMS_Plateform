@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Introduction to AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+  /* Confetti Fullscreen Overlay */
+  #confettiCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* Modern FAQ Styles */
+  .faq-section {
+    max-width: 900px;
+    margin: 0 auto 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .faq-section h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+  }
+
+  details {
+    margin-bottom: 12px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #fefefe;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  details[open] {
+    border-color: #9333ea;
+    box-shadow: 0 4px 10px rgba(147, 51, 234, 0.1);
+  }
+
+  summary {
+    padding: 12px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary i {
+    color: #9333ea;
+    transition: transform 0.3s ease;
+  }
+
+  details[open] summary i {
+    transform: rotate(180deg);
+  }
+
+  details p {
+    padding: 0 16px 12px 16px;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fafafa;
+    }
+
+    /* Header */
+    header {
+      background-color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    .my-dashboard {
+      background-color: #9333ea;
+      height: 50px;
+      width: 130px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .my-dashboard a {
+      text-decoration: none;
+      color: white;
+      display: block;
+      line-height: 50px;
+      text-align: center;
+    }
+.stars
+{
+    color: #f1c40f;
+}
+.buynow-button
+{
+    height: 40px;
+    width: 100px;
+     background: linear-gradient(90deg, #A445B2 0%, #D41872 100%);
+    border: none;
+    border-radius: 3px;
+    
+}
+.buynow-button a {
+    text-decoration: none;
+    color: #ffff;
+}
+    /* Layout */
+    main {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+      gap: 20px;
+      background-color: white;
+    }
+
+    .course-info {
+      width: 50%;
+    }
+
+    .course-info h1 {
+      font-size: 32px;
+      margin-top: 0;
+    }
+
+    .stars {
+      color: #f1c40f;
+    }
+
+    .video-player {
+      width: 50%;
+    }
+
+    .video-player iframe {
+      width: 100%;
+      height: 377px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    /* Course Page */
+    .course-page {
+      max-width: 1000px;
+      margin: 20px auto 0 auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .course-requirements, .course-details {
+      margin-bottom: 30px;
+    }
+
+    .course-requirements ul,
+    .course-details ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Scoped checkmarks */
+    .course-requirements li::before,
+    .course-details li::before {
+      content: "\2713";
+      margin-right: 10px;
+      color: #666;
+    }
+
+    .course-requirements li,
+    .course-details li {
+      margin-bottom: 10px;
+    }
+
+    /* Video Chapters */
+    .progress {
+      margin: 20px auto 0 auto;
+      max-width: 1000px;
+    }
+
+    .progress-bar {
+      background: #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-inner {
+      height: 20px;
+      width: 0%;
+      background: linear-gradient(90deg, #ff4b2b, #ff416c);
+      transition: width 0.5s ease;
+    }
+
+    #chapters {
+      list-style: none;
+      padding: 0;
+      margin: 10px auto 0 auto;
+      max-width: 1000px;
+    }
+
+    #chapters li {
+      margin: 8px 0;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+    }
+
+    #chapters button {
+      background: linear-gradient(90deg, #ff4b2b, #ff416c);
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    #chapters button.completed {
+      background: #4caf50;
+    }
+
+    .complete-message {
+      display: none;
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #4caf50;
+      text-align: center;
+      font-weight: bold;
+      position: relative;
+    }
+
+    .close-complete {
+      position: absolute;
+      right: 10px;
+      top: 0;
+      font-size: 18px;
+      color: #999;
+      cursor: pointer;
+    }
+
+    /* instructor */
+    .instructor-card {
+        display: flex;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        padding: 20px;
+        max-width: 950px;
+        align-items: center;
+        gap: 20px;
+        margin: 0 auto 50px auto;
+    }
+
+    .instructor-card img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    .info h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .info p.role {
+        color: gray;
+        font-size: 14px;
+        margin: 2px 0 10px;
+    }
+
+    .stats {
+        display: flex;
+        gap: 15px;
+        margin: 8px 0;
+        font-size: 14px;
+        flex-wrap: wrap;
+    }
+
+    .stats div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #333;
+    }
+
+    .stats i {
+        color: #8e44ad;
+    }
+
+    .desc {
+        font-size: 13px;
+        color: #555;
+        margin-top: 8px;
+    }
+
+    .rating {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 14px;
+    }
+
+    .rating i {
+        color: gold;
+    }
+
+    /* FAQ */
+    .faq-section {
+      max-width: 900px;
+      margin: 0 auto 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .faq-section h2 {
+      margin-bottom: 10px;
+    }
+
+    details {
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      background: #f9f9f9;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #ece8f5;
+      padding: 20px;
+    }
+
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-section {
+      width: 22%;
+      min-width: 180px;
+      padding: 10px;
+    }
+
+    .footer-section h2 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-section li {
+      margin-bottom: 8px;
+    }
+
+    .footer-section a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .copyright {
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">SHIKSHA SETU</div>
+    <button class="my-dashboard"><a href="studentdashboard1.html">My Dashboard</a></button>
+  </header>
+
+  <!-- Course Section -->
+  <main>
+    <div class="course-info">
+      <h1>Introduction to Artificial Intelligence (AI)</h1>
+      <h3>About this course</h3>
+      <p>Artificial Intelligence (AI) enables machines to think, learn, and make decisions like humans. It powers smart applications, automation, and data analysis across various industries.</p>
+      <p>Level: Beginners</p>
+      <p>Price: ₹1</p>
+      <div class="stars">★★★★☆</div>
+      <center><button class="buynow-button"><a href="paymentsection.html">Buy Now</a></button></center>
+    </div>
+    <div class="video-player">
+      <iframe src="https://www.youtube.com/embed/JMUxmLyrhSk" title="Artificial Intelligence Full Course" allowfullscreen></iframe>
+    </div>
+  </main>
+
+  <!-- Course Details -->
+  <div class="course-page">
+    <div class="course-requirements">
+      <h2>Course Requirements</h2>
+      <ul>
+        <li>Detailed Understanding of Generative AI</li>
+        <li>Industry use cases and ideas that can be implemented</li>
+        <li>Future trends and how to stay relevant in post-GenAI world</li>
+        <li>Key Concepts - LLM, Embeddings, Prompt Engineering, Fine Tuning</li>
+        <li>Roadmap for continuous learning</li>
+      </ul>
+    </div>
+    <div class="course-details">
+      <h2>This course includes:</h2>
+      <ul>
+        <li>22 hours on-demand video</li>
+        <li>20 downloadable resources</li>
+        <li>Access on mobile and TV</li>
+        <li>Full lifetime access</li>
+        <li>Certificate of completion</li>
+        <li>Bonus eBooks & study materials</li>
+        <li>24/7 instructor support</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress">
+    <strong>Progress: <span id="progressPercent">0%</span></strong>
+    <div class="progress-bar">
+      <div class="progress-bar-inner" id="progressBar"></div>
+    </div>
+  </div>
+
+  <!-- Chapters -->
+  <ul id="chapters">
+    <li data-start="0"><span>Introduction</span> <button>Play</button></li>
+    <li data-start="60"><span>What Is AI?</span> <button>Play</button></li>
+    <li data-start="180"><span>History of AI</span> <button>Play</button></li>
+    <li data-start="360"><span>Machine Learning Basics</span> <button>Play</button></li>
+    <li data-start="600"><span>Deep Learning / Neural Networks</span> <button>Play</button></li>
+    <li data-start="900"><span>Natural Language Processing</span> <button>Play</button></li>
+    <li data-start="1200"><span>Use Cases & Demo</span> <button>Play</button></li>
+  </ul>
+
+  <div class="complete-message" id="completeMessage">
+    🎉 You have completed the course successfully! 🎉
+    <span class="close-complete" onclick="document.getElementById('completeMessage').style.display='none'">&times;</span>
+  </div>
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Instructor -->
+  <center><div class="instructor-card">
+    <img src="images/SarahWilson.png" alt="Instructor">
+    <div class="info">
+        <h2> Sarah Wilson</h2>
+        <p class="role">Pro Instructor</p>
+        
+        <div class="stats">
+            <div><i class="fa-solid fa-book"></i> <b>6</b> Courses</div>
+            <div><i class="fa-solid fa-user"></i> <b>20,000</b> Students</div>
+            <div><i class="fa-solid fa-comment"></i> <b>2,500</b> Reviews</div>
+        </div>
+
+        <p class="desc">Sarah Wilson had over 10 years of experience in the industry, teaching thousands of students worldwide.</p>
+        
+        <div class="rating">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-alt"></i>
+            <span>(4.5)</span>
+        </div>
+    </div>
+  </div></center>
+
+  <!-- FAQ Section -->
+  <div class="faq-section">
+    <h2>Frequently Asked Questions on AI in 2025</h2>
+    <details>
+      <summary>What are the top AI trends in 2025?</summary>
+      <p>Generative AI, autonomous AI agents, AI-driven healthcare, and AI-powered cybersecurity are dominating in 2025.</p>
+    </details>
+    <details>
+      <summary>Will AI replace jobs in 2025?</summary>
+      <p>AI will automate certain repetitive tasks but will also create new opportunities in AI development, ethics, and data analysis.</p>
+    </details>
+    <details>
+      <summary>How safe is AI in 2025?</summary>
+      <p>AI safety is a priority, with strict regulations and ethical guidelines being implemented worldwide.</p>
+    </details>
+    <details>
+      <summary>What skills should I learn for AI in 2025?</summary>
+      <p>Machine learning, prompt engineering, data science, AI ethics, and cloud-based AI tools are essential skills.</p>
+    </details>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h2>EXCELL SKILL</h2>
+        <p>Terms of Use</p>
+        <p>Privacy Policy</p>
+      </div>
+      <div class="footer-section">
+        <h2>About</h2>
+        <ul>
+          <li>About Us</li>
+          <li>Services</li>
+          <li>Pricing</li>
+          <li>Blog</li>
+          <li>Contact</li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h2>Quick Links</h2>
+        <ul>
+          <li>Gallery</li>
+          <li>Library</li>
+          <li>Partners</li>
+          <li>Career</li>
+          <li>News & Blogs</li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h2>Support</h2>
+        <ul>
+          <li>FAQs</li>
+          <li>Forum</li>
+          <li>Sitemaps</li>
+          <li>Documentation</li>
+          <li>Contact</li>
+        </ul>
+      </div>
+    </div>
+    <p class="copyright">Copyright © 2025 Excell Skill. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let completed = 0;
+    const total = document.querySelectorAll("#chapters li").length;
+
+    document.querySelectorAll("#chapters li").forEach(item => {
+      const btn = item.querySelector("button");
+      btn.addEventListener("click", () => {
+        const startSec = parseFloat(item.dataset.start);
+        const youtubeURL = `https://www.youtube.com/watch?v=JMUxmLyrhSk&t=${startSec}s`;
+        window.open(youtubeURL, '_blank');
+
+        if (!btn.classList.contains("completed")) {
+          btn.classList.add("completed");
+          btn.textContent = "Completed";
+          completed++;
+          updateProgress();
+        }
+      });
+    });
+
+    function updateProgress() {
+      const percent = Math.round((completed / total) * 100);
+      document.getElementById("progressBar").style.width = percent + "%";
+      document.getElementById("progressPercent").textContent = percent + "%";
+      if (percent === 100) {
+        document.getElementById("completeMessage").style.display = "block";
+        startConfetti();
+      }
+    }
+
+    // Confetti
+    const canvas = document.getElementById("confettiCanvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confettiPieces = [];
+    function createConfetti() {
+      for (let i = 0; i < 150; i++) {
+        confettiPieces.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          size: Math.random() * 10 + 5,
+          color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+          speed: Math.random() * 3 + 2
+        });
+      }
+    }
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettiPieces.forEach(p => {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, p.size, p.size);
+      });
+    }
+    function updateConfetti() {
+      confettiPieces.forEach(p => {
+        p.y += p.speed;
+        if (p.y > canvas.height) p.y = 0 - p.size;
+      });
+    }
+    function startConfetti() {
+      createConfetti();
+      setInterval(() => {
+        drawConfetti();
+        updateConfetti();
+      }, 30);
+    }
+  </script>
+</body>
+</html>

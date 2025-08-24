@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LMS — Payment</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    --accent1:#A445B2; --accent2:#D41872;
+    --bg:#f7f8fa; --muted:#6b7280; --primary-gradient: linear-gradient(90deg,var(--accent1),var(--accent2));
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Poppins",sans-serif;background:var(--bg);color:#111827;}
+  .app {
+  max-width: 420px;       /* reduce width */
+  margin: 40px auto;      /* center horizontally & add top margin */
+  padding: 20px;          /* inner spacing */
+  background: #fff;       /* optional: make container white */
+  border-radius: 12px;    /* rounded corners */
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1); /* subtle shadow */
+}
+  .methods{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+  .method{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;border:1px solid #eef0f3;cursor:pointer;background:#fff;transition:all .18s;}
+  .method img{width:36px;height:36px;object-fit:contain;}
+  .method:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,0.04);}
+  .method.selected{background:linear-gradient(90deg, rgba(164,69,178,0.12), rgba(212,24,114,0.08));border-color:rgba(164,69,178,0.3);}
+  .method .info{flex:1;}
+  .method .info strong{display:block;}
+  .method .info small{color:var(--muted);font-size:12px;}
+  .input{padding:10px;border-radius:8px;border:1px solid #e6e9ee;background:#fff; max-width: 380px; font-size:14px;margin-top:6px;width:100%;}
+  .pay-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px;}
+  .price-box strong{font-size:20px;color:var(--accent1);}
+  .btn-pay{background:var(--primary-gradient);color:#fff;padding:12px 18px;border-radius:10px;border:none;font-weight:600;cursor:pointer;}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:50;}
+  .modal .box{background:#fff;padding:18px;border-radius:12px;max-width:520px;width:100%;text-align:center;}
+  .modal .box h3{margin:8px 0;}
+  #confetti-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:60;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <h3>Choose Course</h3>
+  <select id="courseSelect" class="input">
+    <option value="" disabled selected>Select Course</option>
+    <option value="Web Development">Web Development</option>
+    <option value="Data Science">Data Science</option>
+    <option value="AI">Artificial Intelligence</option>
+    <option value="AI">Financial Marketing</option>
+    <option value="AI">Digital Marketing</option>
+    <option value="AI">Cyber security</option>
+</select>
+
+
+  <h3 style="margin-top:12px;">Choose Payment Method</h3>
+  <div class="methods" id="methodsWrap">
+    <div class="method" data-method="UPI"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/512px-UPI-Logo-vector.svg.png" alt="upi"><div class="info"><strong>UPI</strong><small>Fast & secure</small></div></div>
+    <div class="method" data-method="Card"><img src="https://cdn-icons-png.flaticon.com/512/633/633611.png" alt="card"><div class="info"><strong>Card</strong><small>Visa, Mastercard, Rupay</small></div></div>
+    <div class="method" data-method="NetBanking"><img src="https://cdn-icons-png.flaticon.com/512/1251/1251697.png" alt="netbanking"><div class="info"><strong>Net Banking</strong><small>Select your bank</small></div></div>
+  </div>
+
+  <div id="dynamicInputs"></div>
+
+  <div class="pay-footer">
+    <div class="price-box">
+      <span>Amount</span>
+      <strong id="priceDisplay">₹1</strong>
+    </div>
+    <button class="btn-pay" id="payBtn">Pay Now</button>
+  </div>
+</div>
+
+<div class="modal" id="successModal">
+  <div class="box">
+    <div style="font-size:48px;color:var(--accent1)">✔</div>
+    <h3>Payment Successful</h3>
+    <p id="successText">You now have access to the course for 30 days.</p>
+    <button onclick="closeSuccess()" class="btn-pay" style="margin-top:8px;">Close</button>
+  </div>
+</div>
+
+<canvas id="confetti-canvas"></canvas>
+
+<script>
+const $ = (s)=>document.querySelector(s), $all=(s)=>document.querySelectorAll(s);
+const methods = $all('.method'), dynamicInputs=$('#dynamicInputs');
+const payBtn=$('#payBtn'), successModal=$('#successModal'), successText=$('#successText');
+const courseSelect=$('#courseSelect');
+let selectedMethod=null, selectedCourse={title:'', price:1};
+
+courseSelect.addEventListener('change',()=>{
+  selectedCourse.title=courseSelect.value;
+  selectedCourse.price=1;
+  $('#priceDisplay').textContent='₹'+selectedCourse.price;
+});
+
+methods.forEach(m=>{
+  m.addEventListener('click',()=>{
+    methods.forEach(x=>x.classList.remove('selected'));
+    m.classList.add('selected');
+    selectedMethod = m.dataset.method;
+    renderInputs(selectedMethod);
+  });
+});
+
+function renderInputs(method){
+  dynamicInputs.innerHTML='';
+  if(method==='UPI') dynamicInputs.innerHTML='<input id="upiId" class="input" placeholder="example@upi">';
+  if(method==='Card') dynamicInputs.innerHTML='<input id="cardNumber" class="input" placeholder="Card Number"><input id="cardName" class="input" placeholder="Name on Card"><input id="cardExp" class="input" placeholder="MM/YY"><input id="cardCvv" class="input" placeholder="CVV">';
+  if(method==='NetBanking') dynamicInputs.innerHTML='<select id="bankSelect" class="input"><option value="">Select Bank</option><option>SBI</option><option>HDFC</option><option>ICICI</option></select>';
+}
+
+payBtn.addEventListener('click',()=>{
+  if(!selectedCourse.title){ alert('Select a course'); return; }
+  if(!selectedMethod){ alert('Select payment method'); return; }
+
+  if(selectedMethod==='UPI'){ if(!$('#upiId').value.trim()){ alert('Enter UPI ID'); return; } }
+  if(selectedMethod==='Card'){ if(!$('#cardNumber').value.trim() || !$('#cardName').value.trim()){ alert('Fill card details'); return; } }
+  if(selectedMethod==='NetBanking'){ if(!$('#bankSelect').value){ alert('Select bank'); return; } }
+
+  payBtn.disabled=true; payBtn.textContent='Processing...';
+  setTimeout(()=>{
+    payBtn.disabled=false; payBtn.textContent='Pay Now';
+    successText.innerHTML=`Payment of ₹${selectedCourse.price} via <strong>${selectedMethod}</strong> successful!`;
+    successModal.style.display='flex'; startConfetti();
+  },800);
+});
+
+function closeSuccess(){ successModal.style.display='none'; stopConfetti(); }
+
+// Confetti
+const confettiCanvas=$('#confetti-canvas'), confCtx=confettiCanvas.getContext('2d');
+let confettiPieces=[], confettiRaf=null;
+function resizeConfetti(){ confettiCanvas.width=window.innerWidth; confettiCanvas.height=window.innerHeight; }
+window.addEventListener('resize',resizeConfetti); resizeConfetti();
+function startConfetti(){
+  confettiPieces=[]; for(let i=0;i<200;i++){ confettiPieces.push({x:Math.random()*confettiCanvas.width,y:Math.random()*confettiCanvas.height-100,r:Math.random()*6+3,color:`hsl(${Math.random()*360},80%,60%)`,dx:(Math.random()-0.5)*2,dy:Math.random()*3+2,rot:Math.random()*360}); }
+  confettiRaf=requestAnimationFrame(confettiLoop); setTimeout(stopConfetti,3000);
+}
+function confettiLoop(){
+  confCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  confettiPieces.forEach(p=>{
+    confCtx.save(); confCtx.translate(p.x,p.y); confCtx.rotate(p.rot*Math.PI/180);
+    confCtx.fillStyle=p.color; confCtx.fillRect(-p.r/2,-p.r/2,p.r,p.r*0.6); confCtx.restore();
+    p.x+=p.dx; p.y+=p.dy; p.rot+=4; if(p.y>confettiCanvas.height+20){ p.y=-10; p.x=Math.random()*confettiCanvas.width; }
+  });
+  confettiRaf=requestAnimationFrame(confettiLoop);
+}
+function stopConfetti(){ cancelAnimationFrame(confettiRaf); confettiRaf=null; confCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height); }
+</script>
+</body>
+</html>

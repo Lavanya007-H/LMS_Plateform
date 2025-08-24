@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Page</title>
+    <link rel="stylesheet" href="style.css">
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<style>
+    /*header section code*/
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+  header {
+    background-color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  .my-dashboard
+  {
+    background-color: #9333ea;
+    height: 50px;
+    width: 130px;
+    color: white;
+    border: none;
+    border-radius: 3px;
+  }
+   .my-dashboard a{
+    text-decoration: none;
+    color: white;
+   }
+main {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.course-info {
+    width: 60%;
+}
+
+.course-info h1 {
+    font-size: 36px;
+    margin-top: 0;
+    
+}
+.stars
+{
+    color: #f1c40f;
+}
+.buynow-button
+{
+    height: 40px;
+    width: 100px;
+     background: linear-gradient(90deg, #A445B2 0%, #D41872 100%);
+    border: none;
+    border-radius: 3px;
+    
+}
+.buynow-button a {
+    text-decoration: none;
+    color: #ffff;
+}
+
+
+.video-player {
+    width: 50%;
+}
+
+.video-player img {
+    width: 400px;
+    height: 150px;
+    object-fit: cover;
+    padding-left: 100px;
+}
+
+footer {
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #ddd;
+}
+
+.course-page {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.course-requirements, .what-youll-learn, .course-details {
+    margin-bottom: 40px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+li:before {
+    content: "\2713";
+    margin-right: 10px;
+    color: #666;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.container {
+    max-width: 380px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.course-price {
+    margin-bottom: 20px;
+}
+
+.course-price h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.course-price span {
+    text-decoration: line-through;
+    color: #666;
+}
+
+.course-actions {
+    margin-bottom: 20px;
+}
+.course-includes {
+    margin-bottom: 20px;
+}
+
+.course-includes h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.course-includes ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.course-includes li {
+    margin-bottom: 10px;
+}
+
+.course-includes i {
+    margin-right: 10px;
+}
+
+.course-footer {
+    margin-top: 20px;
+}
+
+
+span
+{
+    color: #9b06a9;
+    padding-right: 20px;
+}
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  }
+  h1 {
+    text-align: center;
+    color: black;
+  }
+  .video-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 12px 0;
+    padding: 12px 15px;
+    border-radius: 8px;
+    background: #e9ecef;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .video-section:hover {
+    background: #d0e7ff;
+  }
+  .video-title {
+    flex: 1;
+    padding-left: 15px;
+    font-weight: bold;
+  }
+  .play-btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    background: #007bff;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .play-btn.completed {
+    background: #28a745;
+  }
+  .progress-container {
+    width: 100%;
+    background: #dee2e6;
+    height: 25px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 25px;
+  }
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #007bff;
+    transition: width 0.5s;
+  }
+  /* Confetti animation */
+  .confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 9999;
+  }
+  .confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    opacity: 0.8;
+    animation: confetti-fall 3s linear infinite;
+  }
+  @keyframes confetti-fall {
+    0% {transform: translateY(0) rotate(0deg);}
+    100% {transform: translateY(100vh) rotate(360deg);}
+  }
+
+/* instructor */
+.instructor-card {
+        display: flex;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        padding: 20px;
+        max-width: 950px;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 50px;
+    }
+
+    .instructor-card img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    .info h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .info p.role {
+        color: gray;
+        font-size: 14px;
+        margin: 2px 0 10px;
+    }
+
+    .stats {
+        display: flex;
+        gap: 15px;
+        margin: 8px 0;
+        font-size: 14px;
+        flex-wrap: wrap;
+    }
+
+    .stats div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #333;
+    }
+
+    .stats i {
+        color: #8e44ad;
+    }
+
+    .desc {
+        font-size: 13px;
+        color: #555;
+        margin-top: 8px;
+    }
+
+    .rating {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 14px;
+    }
+
+    .rating i {
+        color: gold;
+    }
+/* FAQ s*/
+.faq-container {
+        width: 100%;
+        max-width: 1000px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin-bottom: 50px;
+    }
+    .faq {
+        border-bottom: 1px solid #ddd;
+    }
+    .faq:last-child {
+        border-bottom: none;
+    }
+    .faq-question {
+        padding: 20px;
+        cursor: pointer;
+        position: relative;
+        font-weight: bold;
+        transition: background 0.3s;
+    }
+    .faq-question:hover {
+        background: #f0f0f0;
+    }
+    .faq-question::after {
+        content: '+';
+        position: absolute;
+        right: 20px;
+        font-size: 24px;
+        transition: transform 0.3s;
+    }
+    .faq.active .faq-question::after {
+        content: '-';
+    }
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, padding 0.3s ease;
+        padding: 0 20px;
+        background: #fafafa;
+    }
+    .faq.active .faq-answer {
+        padding: 15px 20px;
+        max-height: 500px; /* large enough to fit answer */
+    }
+
+/*footer section code*/
+footer {
+    background-color: #ece8f5;
+    padding: 20px;
+    text-align: left;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.footer-section {
+    width: 25%;
+    padding: 10px;
+}
+
+.footer-section h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section li {
+    margin-bottom: 10px;
+}
+
+.footer-section a {
+    text-decoration: none;
+    color: #333;
+}
+
+.footer-section li:hover {
+    color: #666;
+}
+
+.social-media {
+    margin-top: 20px;
+}
+
+.social-media li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.copyright {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+</style>
+<body>
+    <!-- header section code -->
+    <header>
+        <div class="nav-left">
+          <div class="logo">SHIKSHA SETU</div>
+        </div>
+    
+          <div class="buttons">
+            <button class="my-dashboard"><a href="studentdashboard1.html">My dashboard</a></button>
+          </div>
+        </div>
+      </header>
+    <main>
+        <div class="course-info">
+            <h1> Fullstack Development course   from basic to advanced 2025</h1>
+            <h3>About this course</h3>
+            <p>Web development is creating websites using HTML, CSS, and JavaScript. It includes design, coding, and hosting to make sites work on all devices.</p>
+            <p>Level: Beginners</p>
+            <p>Price:₹ 1</p>
+            <div class="stars">★★★★☆</div>
+            <center><button class="buynow-button"><a href="paymentsection.html">Buy Now</a></button></center>
+        </div>
+        <div class="video-player">
+            <iframe width="679" height="382" src="https://www.youtube.com/embed/OivTPt5LQh0" title="Data Science Full Course (2025) | Data Science Course FREE  | Intellipaat" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            
+        </div>
+    </main>
+    
+    <div class="course-page">
+        <div class="course-requirements">
+            <h2>Course Requirements</h2>
+            <ul>
+                <li>Basic understanding of HTML, CSS, and JavaScript</li>
+                <li>Prior experience with React fundamentals</li>
+                <li>Familiarity with Tailwind CSS for styling</li>
+                <li>Understanding of state management using React hooks (useState, useEffect)</li>
+                <li>Experience with ES6 JavaScript features like arrow functions and destructuring</li>
+            </ul>
+        </div>
+        <div class="course-details">
+            <h2>This course includes:</h2>
+            <ul>
+                <li>22 hours on-demand video</li>
+                <li>20 downloadable resources</li>
+                <li>Access on mobile and TV</li>
+                <li>Full lifetime access</li>
+                <li>Certificate of completion</li>
+                <li>Bonus eBooks & study materials</li>
+                <li>24/7 instructor support</li>
+            </ul>
+           
+        </div>
+    </div>
+    <div class="container">
+  <h2>Data Science Full Course (2025)</h2>
+  
+
+  <!-- 7 video chunks for 10 hours -->
+  <div class="video-section" data-start="0" data-end="3600">
+    <button class="play-btn">Play 1</button>
+    <div class="video-title">Introduction & Overview (0:00 - 1:00:00)</div>
+  </div>
+
+  <div class="video-section" data-start="3600" data-end="5400">
+    <button class="play-btn">Play 2</button>
+    <div class="video-title">Python Basics & Libraries (1:00:00 - 1:30:00)</div>
+  </div>
+
+  <div class="video-section" data-start="5400" data-end="7200">
+    <button class="play-btn">Play 3</button>
+    <div class="video-title">Statistics & Data Analysis (1:30:00 - 2:00:00)</div>
+  </div>
+
+  <div class="video-section" data-start="7200" data-end="9000">
+    <button class="play-btn">Play 4</button>
+    <div class="video-title">Machine Learning (2:00:00 - 2:30:00)</div>
+  </div>
+
+  <div class="video-section" data-start="9000" data-end="10800">
+    <button class="play-btn">Play 5</button>
+    <div class="video-title">Data Visualization (2:30:00 - 3:00:00)</div>
+  </div>
+
+  <div class="video-section" data-start="10800" data-end="12600">
+    <button class="play-btn">Play 6</button>
+    <div class="video-title">Real World Projects (3:00:00 - 3:30:00)</div>
+  </div>
+
+  <div class="video-section" data-start="12600" data-end="14400">
+    <button class="play-btn">Play 7</button>
+    <div class="video-title">Advanced Topics & Conclusion (3:30:00 - 4:00:00)</div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+</div>
+
+<div class="confetti" id="confetti"></div>
+
+    <!-- Instructor image section-->
+     <center><div class="instructor-card">
+    <img src="../images/Priyanka.png" alt="Instructor">
+    <div class="info">
+        <h2>Priyanka</h2>
+        <p class="role">Pro Instructor</p>
+        
+        <div class="stats">
+            <div><i class="fa-solid fa-book"></i> <b>12</b> Courses</div>
+            <div><i class="fa-solid fa-user"></i> <b>20,000</b> Students</div>
+            <div><i class="fa-solid fa-comment"></i> <b>2,500</b> Reviews</div>
+        </div>
+
+        <p class="desc">Priyanka has over 10 years of experience in the industry, teaching thousands of students worldwide.</p>
+        
+        <div class="rating">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-alt"></i>
+            <span>(4.5)</span>
+        </div>
+    </div>
+</div></center>
+<!-- Frequently asked questions  -->
+ <center>
+ <h2>Frequently Asked Questions</h2>
+        <div class="faq-container">
+    <div class="faq">
+        <div class="faq-question">1. What is Data Science in 2025?</div>
+        <div class="faq-answer">
+            Data Science in 2025 focuses on advanced AI-driven analytics, predictive modeling, and automation tools for business intelligence and decision making.
+        </div>
+    </div>
+    <div class="faq">
+        <div class="faq-question">2. What programming languages are trending for Data Science?</div>
+        <div class="faq-answer">
+            Python remains the most popular, followed by R, Julia, and SQL. Additionally, knowledge of AI frameworks like TensorFlow, PyTorch, and cloud-based analytics tools is highly valuable.
+        </div>
+    </div>
+    <div class="faq">
+        <div class="faq-question">3. How is AI impacting Data Science careers?</div>
+        <div class="faq-answer">
+            AI is automating routine data tasks, emphasizing the need for skills in AI model building, MLOps, and interpreting AI-driven insights.
+        </div>
+    </div>
+    <div class="faq">
+        <div class="faq-question">4. What are the top tools used in 2025?</div>
+        <div class="faq-answer">
+            Tools like Jupyter Notebook, Google Colab, Power BI, Tableau, Apache Spark, and cloud services like AWS, Azure, and GCP dominate the industry.
+        </div>
+    </div>
+    <div class="faq">
+        <div class="faq-question">5. What career opportunities exist in Data Science?</div>
+        <div class="faq-answer">
+            Roles include Data Analyst, Machine Learning Engineer, AI Specialist, Business Intelligence Developer, and Data Engineer, with high demand in finance, healthcare, e-commerce, and cybersecurity.
+        </div>
+    </div>
+</div>
+</center>
+   
+    <!-- footer section code-->
+    <footer>
+        <div class="footer-container">
+            <div class="skillmine">
+                <h2>EXCELL SKILL</h2>
+                <p>Terms of Use</p>
+                <p>Privacy Policy</p>
+            </div>
+            <div class="about">
+                <h2>About</h2>
+                <ul> 
+                    <li>About Us</li>                  
+                    <li>Services</li>  
+                    <li>Pricing</li>               
+                    <li>Blog</li>
+                    <li>Contact</li>  
+                 
+                </ul>
+            </div>
+            <div class="quick-links">
+                <h2>Quick Links</h2>
+                <ul>
+                    <li>Gallery</li>
+                    <li>Library</li>  
+                    <li>Partners</li>
+                    <li>Career</li>  
+                    <li>News & Blogs</li>
+                </ul>
+            </div>
+            <div class="support">
+                <h2>Support</h2>
+                <ul>
+                    <li>FAQs</li>  
+                    <li>Forum</li>
+                    <li>Sidemaps</li>  
+                    <li>Documentation</li>    
+                    <li>Contact</li>                 
+                </ul>
+            </div>
+        </div>
+        <p class="copyright">Copyright &copy; 2025 Excell Skill. All rights reserved.</p>
+    </footer>
+    <script>
+        const videoSections = document.querySelectorAll('.video-section');
+  const progressBar = document.getElementById('progressBar');
+  let completedSections = 0;
+  let animationDone = false;
+
+  videoSections.forEach(section => {
+    const btn = section.querySelector('.play-btn');
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const start = section.getAttribute('data-start');
+      const videoUrl = `https://www.youtube.com/watch?v=OivTPt5LQh0&t=${start}s`;
+      window.open(videoUrl, '_blank');
+
+      if(!btn.classList.contains('completed')){
+        btn.classList.add('completed');
+        completedSections++;
+        updateProgress();
+      }
+    });
+  });
+
+  function updateProgress() {
+    const progressPercent = (completedSections / videoSections.length) * 100;
+    progressBar.style.width = progressPercent + '%';
+    if(progressPercent === 100 && !animationDone){
+      animationDone = true;
+      triggerConfetti();
+    }
+  }
+
+  function triggerConfetti() {
+    const confettiContainer = document.getElementById('confetti');
+    for(let i = 0; i < 200; i++){
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti-piece');
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+      confetti.style.backgroundColor = `hsl(${Math.random()*360}, 70%, 60%)`;
+      confetti.style.animationDuration = 2 + Math.random()*3 + 's';
+      confettiContainer.appendChild(confetti);
+      setTimeout(() => { confetti.remove(); }, 5000);
+    }
+  }
+  /* Faqs*/
+ const faqs = document.querySelectorAll('.faq');
+
+faqs.forEach(faq => {
+    faq.querySelector('.faq-question').addEventListener('click', () => {
+        faq.classList.toggle('active');
+    });
+});
+    </script>
+</body>
+</html>
+   

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard</title>
+
+  <!-- Google font + Font Awesome + Chart.js -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root{
+      --sidebar-width:240px;
+      --accent1:#A445B2;
+      --accent2:#D41872;
+      --bg:#f7f8fa;
+      --muted:#6b7280;
+      --card-bg:#fff;
+      --icon-gold:#fbc531;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Poppins",sans-serif;
+      background:var(--bg);
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* Layout */
+    .dashboard-container{display:flex;min-height:100vh}
+    .sidebar{
+      width:var(--sidebar-width);
+      background:#ffffff;
+      box-shadow:2px 0 10px rgba(0,0,0,0.06);
+      padding:22px 16px;
+      display:flex;flex-direction:column;
+    }
+    .logo{
+      font-weight:600;color:var(--accent1);
+      display:flex;align-items:center;gap:10px;font-size:18px;margin-bottom:18px;
+    }
+
+    .menu{list-style:none;padding:0;margin:0;flex:1}
+    .menu li{
+      display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:8px;color:#374151;
+      cursor:pointer;margin-bottom:6px;transition:all .2s;
+    }
+    .menu li i{width:26px;text-align:center;color:var(--icon-gold)}
+    .menu li:hover{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff}
+    .menu li.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff}
+
+    /* Main */
+    .main{flex:1; padding:18px; overflow:auto}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .topbar .title{font-size:20px;font-weight:600}
+    .topbar .profile{display:flex;align-items:center;gap:12px}
+
+    /* Cards grid */
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+    .card{
+      background:var(--card-bg);border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,0.06);
+      display:flex;align-items:center;gap:12px;
+    }
+    .card .ico{font-size:26px;color:var(--icon-gold);width:46px;height:46px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,0.03),transparent)}
+    .card .txt h3{margin:0;font-size:18px}
+    .card .txt p{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+    /* Content area */
+    .content{display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:start}
+    .panel{background:var(--card-bg);border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,0.05)}
+
+    /* Forms and tables */
+    form .row{display:flex;gap:12px;margin-bottom:12px}
+    form label{font-size:13px;color:var(--muted);margin-bottom:6px;display:block}
+    input[type="text"], input[type="number"], input[type="date"], input[type="time"], textarea, select{
+      width:100%;padding:10px;border-radius:8px;border:1px solid #e5e7eb;font-size:14px;background:#fff;
+    }
+    button{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
+    .small-btn{background:#fff;border:1px solid #e5e7eb;color:#374151;padding:6px 8px;border-radius:6px;cursor:pointer}
+
+    table{width:100%;border-collapse:collapse}
+    table th,table td{padding:10px;border-bottom:1px solid #f3f4f6;text-align:left;font-size:14px}
+    .actions button{margin-right:6px}
+
+    .pill{padding:4px 8px;border-radius:999px;font-size:12px}
+    .pill.ok{background:#e8f7ee;color:#0f9d58}
+    .pill.warn{background:#fff6e5;color:#d97706}
+    .pill.danger{background:#fde8e8;color:#d14343}
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .cards{grid-template-columns:repeat(2,1fr)}
+      .content{grid-template-columns:1fr}
+      .sidebar{position:fixed;left:0;top:0;bottom:0;z-index:3;transform:translateX(0)}
+      .dashboard-container{padding-left:var(--sidebar-width)}
+    }
+    @media (max-width:640px){
+      .cards{grid-template-columns:1fr}
+      .topbar{flex-direction:column;align-items:flex-start;gap:8px}
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Sidebar">
+      <div class="logo"><i class="fa-solid fa-graduation-cap"></i> LMS Admin</div>
+
+      <ul class="menu" id="sidebarMenu">
+        <li data-section="dashboard" class="active"><i class="fa-solid fa-table-columns"></i> Dashboard</li>
+        <li data-section="courses"><i class="fa-solid fa-book-open"></i> Manage Courses</li>
+        <li data-section="instructors"><i class="fa-solid fa-chalkboard-user"></i> Manage Instructors</li>
+        <li data-section="enrollments"><i class="fa-solid fa-user-check"></i> Enrollments</li>
+        <li data-section="quizzes"><i class="fa-solid fa-question"></i> Quizzes & Assignments</li>
+        <li data-section="progress"><i class="fa-solid fa-chart-line"></i> Student Progress</li>
+        <li data-section="reports"><i class="fa-solid fa-chart-pie"></i> Reports & Analytics</li>
+        <li data-section="settings"><i class="fa-solid fa-gear"></i> Settings</li>
+      </ul>
+
+      <div style="margin-top:auto;font-size:13px;color:var(--muted);padding:12px 8px">
+        <div><strong>Signed in as:</strong></div>
+        <div style="margin-top:6px">Admin Demo</div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="topbar">
+        <div class="title">Admin Dashboard</div>
+        <div class="profile">
+          <div style="text-align:right">
+            <div style="font-weight:600">Admin Demo</div>
+            <div style="color:var(--muted);font-size:13px">admin@lms.local</div>
+          </div>
+          <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(90deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600">
+            AD
+          </div>
+        </div>
+      </div>
+
+      <!-- dynamic main-content area -->
+      <div id="mainContentArea">
+        <!-- initial dashboard content -->
+        <section id="dashboardSection">
+          <div class="cards" style="margin-bottom:18px">
+            <div class="card">
+              <div class="ico"><i class="fa-solid fa-book-open"></i></div>
+              <div class="txt"><h3 id="cardCourses">--</h3><p>Total Courses</p></div>
+            </div>
+            <div class="card">
+              <div class="ico"><i class="fa-solid fa-chalkboard-user"></i></div>
+              <div class="txt"><h3 id="cardInstructors">--</h3><p>Total Instructors</p></div>
+            </div>
+            <div class="card">
+              <div class="ico"><i class="fa-solid fa-user-graduate"></i></div>
+              <div class="txt"><h3 id="cardStudents">--</h3><p>Total Students</p></div>
+            </div>
+            <div class="card">
+              <div class="ico"><i class="fa-solid fa-receipt"></i></div>
+              <div class="txt"><h3 id="cardRevenue">₹ --</h3><p>Revenue (mock)</p></div>
+            </div>
+          </div>
+
+          <div class="content">
+            <div class="panel">
+              <h3 style="margin-top:0">Enrollments by Course</h3>
+              <canvas id="enrollChart" style="height:260px"></canvas>
+            </div>
+
+            <div class="panel">
+              <h3 style="margin-top:0">Quick Actions</h3>
+              <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+                <button onclick="navigate('courses')">+ Create Course</button>
+                <button class="small-btn" onclick="navigate('instructors')">Manage Instructors</button>
+                <button class="small-btn" onclick="navigate('enrollments')">Review Enrollments</button>
+                <button class="small-btn" onclick="navigate('reports')">View Reports</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    /***********************************
+     * Simple in-browser "DB" using localStorage
+     ***********************************/
+    const STORAGE_KEY = "admin_dashboard_data_v1";
+    const defaultData = {
+      courses: [
+        { id: idGen(), title: "Web Dev Bootcamp", desc: "HTML/CSS/JS", price: 499, instructorId: null },
+        { id: idGen(), title: "Data Science Intro", desc: "Pandas & ML basics", price: 799, instructorId: null },
+      ],
+      instructors: [
+        { id: idGen(), name: "Anil Verma", email: "anil@lms.local" },
+        { id: idGen(), name: "Sneha Reddy", email: "sneha@lms.local" },
+      ],
+      students: [
+        { id: idGen(), name: "Arjun Kumar", email: "arjun@example.com", progress: 55 },
+        { id: idGen(), name: "Priya Sharma", email: "priya@example.com", progress: 72 },
+        { id: idGen(), name: "Kavya Rao", email: "kavya@example.com", progress: 40 },
+      ],
+      enrollments: [
+        // status: pending | approved | rejected
+        { id: idGen(), studentName: "Arjun Kumar", courseId: null, courseTitle: "Web Dev Bootcamp", status: "pending" },
+        { id: idGen(), studentName: "Priya Sharma", courseId: null, courseTitle: "Data Science Intro", status: "approved" },
+      ],
+      quizzes: [
+        { id: idGen(), q:"Which HTML tag is for a link?", opts:["<a>","<link>","<href>","<url>"], ans:0 },
+        { id: idGen(), q:"CSS stands for?", opts:["Cascading Style Sheets","Computer Style Sheets","Creative Style System","None"], ans:0 },
+        { id: idGen(), q:"JS is used for?", opts:["Styling","Structure","Interactivity","SEO"], ans:2 },
+      ],
+      assignments: [
+        { id: idGen(), title: "Landing Page", desc: "Build responsive LP", due: "2025-09-01" },
+      ],
+      settings: {
+        instituteName: "SkillMine LMS",
+        currency: "INR",
+      }
+    };
+
+    function idGen(){ return 'id_' + Math.random().toString(36).slice(2,9) }
+
+    function loadData(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw){
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
+        return JSON.parse(localStorage.getItem(STORAGE_KEY));
+      }
+      return JSON.parse(raw);
+    }
+    function saveData(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+    let data = loadData();
+
+    /***********************
+     * Sidebar navigation
+     ***********************/
+    const menuEls = document.querySelectorAll('#sidebarMenu li');
+    menuEls.forEach(li => {
+      li.addEventListener('click', () => {
+        menuEls.forEach(x=>x.classList.remove('active'));
+        li.classList.add('active');
+        navigate(li.dataset.section);
+      });
+    });
+
+    function navigate(section){
+      const main = document.getElementById('mainContentArea');
+      if(section === 'dashboard'){
+        main.innerHTML = document.getElementById('dashboardSection').outerHTML;
+        updateDashboardCards();
+        renderEnrollChart();
+        return;
+      }
+      const map = {
+        courses: renderCourses,
+        instructors: renderInstructors,
+        enrollments: renderEnrollments,
+        quizzes: renderQuizzesAssignments,
+        progress: renderProgress,
+        reports: renderReports,
+        settings: renderSettings,
+      };
+      main.innerHTML = map[section] ? map[section]() : '<section class="panel"><h3>Not Implemented</h3></section>';
+      // attach handlers for that section
+      const attachMap = {
+        courses: attachCourseHandlers,
+        instructors: attachInstructorHandlers,
+        enrollments: attachEnrollmentHandlers,
+        quizzes: attachQAHandlers,
+        progress: attachProgressHandlers,
+        reports: attachReportHandlers,
+        settings: attachSettingsHandlers,
+      };
+      if(attachMap[section]) attachMap[section]();
+      updateDashboardCards();
+    }
+
+    /* ---------- Dashboard ---------- */
+    function updateDashboardCards(){
+      const elC = document.getElementById('cardCourses');
+      const elI = document.getElementById('cardInstructors');
+      const elS = document.getElementById('cardStudents');
+      const elR = document.getElementById('cardRevenue');
+      if(elC) elC.textContent = data.courses.length;
+      if(elI) elI.textContent = data.instructors.length;
+      if(elS) elS.textContent = data.students.length;
+      if(elR) elR.textContent = '₹ ' + (calcMockRevenue()).toLocaleString('en-IN');
+    }
+
+    let enrollChartInstance = null;
+    function renderEnrollChart(){
+      const ctx = document.getElementById('enrollChart').getContext('2d');
+      const labels = data.courses.map(c => c.title);
+      // mock: approved enrollments count by courseTitle
+      const counts = labels.map(t => data.enrollments.filter(e=>e.courseTitle===t && e.status==='approved').length);
+      if(enrollChartInstance) enrollChartInstance.destroy();
+      enrollChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data:{labels, datasets:[{label:'Approved Enrollments', data:counts}]},
+        options:{responsive:true, plugins:{legend:{display:false}}}
+      });
+    }
+
+    function calcMockRevenue(){
+      // mock revenue = sum(price * approvedEnrollments)
+      let total = 0;
+      data.courses.forEach(c => {
+        const appr = data.enrollments.filter(e=>e.courseTitle===c.title && e.status==='approved').length;
+        total += (c.price||0) * appr;
+      });
+      return total;
+    }
+
+    /* ---------- COURSES ---------- */
+    function renderCourses(){
+      return `
+        <section class="panel">
+          <h3 style="margin-top:0">Manage Courses</h3>
+          <form id="formCourse" style="margin-bottom:10px">
+            <div class="row">
+              <div style="flex:1"><label>Title</label><input type="text" id="courseTitle" required></div>
+              <div style="flex:1"><label>Price (₹)</label><input type="number" id="coursePrice" min="0" value="0"></div>
+            </div>
+            <div class="row">
+              <div style="flex:1"><label>Description</label><textarea id="courseDesc" rows="3"></textarea></div>
+              <div style="flex:1"><label>Assign Instructor</label>
+                <select id="courseInstructor">
+                  <option value="">-- None --</option>
+                  ${data.instructors.map(i=>`<option value="${i.id}">${escapeHtml(i.name)}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px"><button type="submit">Create Course</button><button type="button" class="small-btn" onclick="navigate('dashboard')">Cancel</button></div>
+          </form>
+
+          <h4>Courses</h4>
+          <table>
+            <thead><tr><th>Title</th><th>Price</th><th>Instructor</th><th>Actions</th></tr></thead>
+            <tbody id="courseTable"></tbody>
+          </table>
+          <div id="courseEditArea" style="margin-top:12px"></div>
+        </section>
+      `;
+    }
+    function attachCourseHandlers(){
+      const tbody = document.getElementById('courseTable');
+      tbody.innerHTML = data.courses.map(c=>{
+        const instr = data.instructors.find(i=>i.id===c.instructorId);
+        return `<tr>
+          <td>${escapeHtml(c.title)}<div style="color:var(--muted);font-size:12px">${escapeHtml(c.desc||'')}</div></td>
+          <td>₹ ${Number(c.price||0).toLocaleString('en-IN')}</td>
+          <td>${instr?escapeHtml(instr.name):'<span class="pill warn">Unassigned</span>'}</td>
+          <td class="actions">
+            <button class="small-btn" onclick="editCourse('${c.id}')">Edit</button>
+            <button class="small-btn" onclick="removeCourse('${c.id}')">Delete</button>
+          </td>
+        </tr>`;
+      }).join('');
+
+      document.getElementById('formCourse').addEventListener('submit',(e)=>{
+        e.preventDefault();
+        const title = document.getElementById('courseTitle').value.trim();
+        const price = parseInt(document.getElementById('coursePrice').value)||0;
+        const desc = document.getElementById('courseDesc').value.trim();
+        const instrId = document.getElementById('courseInstructor').value || null;
+        if(!title){ alert('Title required'); return; }
+        data.courses.push({id:idGen(), title, price, desc, instructorId: instrId});
+        saveData();
+        navigate('courses');
+      });
+    }
+    function editCourse(id){
+      const c = data.courses.find(x=>x.id===id); if(!c) return;
+      const area = document.getElementById('courseEditArea');
+      area.innerHTML = `
+        <div class="panel">
+          <h4>Edit Course</h4>
+          <div class="row">
+            <div style="flex:1"><label>Title</label><input type="text" id="editCTitle" value="${escapeHtml(c.title)}"></div>
+            <div style="flex:1"><label>Price (₹)</label><input type="number" id="editCPrice" value="${c.price||0}"></div>
+          </div>
+          <div class="row">
+            <div style="flex:1"><label>Description</label><textarea id="editCDesc" rows="3">${escapeHtml(c.desc||'')}</textarea></div>
+            <div style="flex:1"><label>Assign Instructor</label>
+              <select id="editCInstr">
+                <option value="">-- None --</option>
+                ${data.instructors.map(i=>`<option value="${i.id}" ${i.id===c.instructorId?'selected':''}>${escapeHtml(i.name)}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px"><button onclick="saveCourse('${c.id}')">Save</button><button class="small-btn" onclick="document.getElementById('courseEditArea').innerHTML=''">Cancel</button></div>
+        </div>`;
+    }
+    function saveCourse(id){
+      const idx = data.courses.findIndex(x=>x.id===id); if(idx<0) return;
+      const t = document.getElementById('editCTitle').value.trim();
+      const p = parseInt(document.getElementById('editCPrice').value)||0;
+      const dsc = document.getElementById('editCDesc').value.trim();
+      const instr = document.getElementById('editCInstr').value || null;
+      if(!t){ alert('Title required'); return; }
+      data.courses[idx] = {...data.courses[idx], title:t, price:p, desc:dsc, instructorId: instr};
+      saveData();
+      navigate('courses');
+    }
+    function removeCourse(id){
+      if(!confirm('Delete this course?')) return;
+      data.courses = data.courses.filter(c=>c.id!==id);
+      saveData();
+      navigate('courses');
+    }
+
+    /* ---------- INSTRUCTORS ---------- */
+    function renderInstructors(){
+      return `
+        <section class="panel">
+          <h3 style="margin-top:0">Manage Instructors</h3>
+          <form id="formInstr" style="margin-bottom:10px">
+            <div class="row">
+              <div style="flex:1"><label>Name</label><input type="text" id="instrName" required></div>
+              <div style="flex:1"><label>Email</label><input type="text" id="instrEmail" required></div>
+            </div>
+            <div style="display:flex;gap:10px"><button type="submit">Add Instructor</button><button type="button" class="small-btn" onclick="navigate('dashboard')">Cancel</button></div>
+          </form>
+          <h4>Instructors</h4>
+          <table>
+            <thead><tr><th>Name</th><th>Email</th><th>Actions</th></tr></thead>
+            <tbody id="instrTable"></tbody>
+          </table>
+          <div id="instrEditArea" style="margin-top:12px"></div>
+        </section>
+      `;
+    }
+    function attachInstructorHandlers(){
+      const tbody = document.getElementById('instrTable');
+      tbody.innerHTML = data.instructors.map(i=>`
+        <tr>
+          <td>${escapeHtml(i.name)}</td>
+          <td>${escapeHtml(i.email)}</td>
+          <td class="actions">
+            <button class="small-btn" onclick="editInstr('${i.id}')">Edit</button>
+            <button class="small-btn" onclick="removeInstr('${i.id}')">Remove</button>
+          </td>
+        </tr>`).join('');
+
+      document.getElementById('formInstr').addEventListener('submit',(e)=>{
+        e.preventDefault();
+        const name = document.getElementById('instrName').value.trim();
+        const email = document.getElementById('instrEmail').value.trim();
+        if(!name||!email){ alert('All fields required'); return; }
+        data.instructors.push({id:idGen(), name, email});
+        saveData();
+        navigate('instructors');
+      });
+    }
+    function editInstr(id){
+      const i = data.instructors.find(x=>x.id===id); if(!i) return;
+      const area = document.getElementById('instrEditArea');
+      area.innerHTML = `
+        <div class="panel">
+          <h4>Edit Instructor</h4>
+          <div class="row">
+            <div style="flex:1"><label>Name</label><input type="text" id="editIName" value="${escapeHtml(i.name)}"></div>
+            <div style="flex:1"><label>Email</label><input type="text" id="editIEmail" value="${escapeHtml(i.email)}"></div>
+          </div>
+          <div style="display:flex;gap:8px"><button onclick="saveInstr('${i.id}')">Save</button><button class="small-btn" onclick="document.getElementById('instrEditArea').innerHTML=''">Cancel</button></div>
+        </div>`;
+    }
+    function saveInstr(id){
+      const idx = data.instructors.findIndex(x=>x.id===id); if(idx<0) return;
+      const n = document.getElementById('editIName').value.trim();
+      const e = document.getElementById('editIEmail').value.trim();
+      if(!n||!e){ alert('All fields required'); return; }
+      data.instructors[idx] = {...data.instructors[idx], name:n, email:e};
+      saveData();
+      navigate('instructors');
+    }
+    function removeInstr(id){
+      if(!confirm('Remove this instructor?')) return;
+      // also detach from courses
+      data.courses = data.courses.map(c=> c.instructorId===id ? {...c, instructorId:null} : c);
+      data.instructors = data.instructors.filter(i=>i.id!==id);
+      saveData();
+      navigate('instructors');
+    }
+
+    /* ---------- ENROLLMENTS ---------- */
+    function renderEnrollments(){
+      return `
+        <section class="panel">
+          <h3 style="margin-top:0">Enrollments</h3>
+          <form id="formEnroll" style="margin-bottom:10px">
+            <div class="row">
+              <div style="flex:1"><label>Student Name</label><input type="text" id="enrStudent" required></div>
+              <div style="flex:1"><label>Course</label>
+                <select id="enrCourse">
+                  ${data.courses.map(c=>`<option value="${c.id}">${escapeHtml(c.title)}</option>`).join('')}
+                </select>
+              </div>
+              <div style="flex:1"><label>Status</label>
+                <select id="enrStatus">
+                  <option value="pending">pending</option>
+                  <option value="approved">approved</option>
+                  <option value="rejected">rejected</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px"><button type="submit">Add Enrollment</button><button type="button" class="small-btn" onclick="navigate('dashboard')">Cancel</button></div>
+          </form>
+
+          <h4>All Enrollments</h4>
+          <table>
+            <thead><tr><th>Student</th><th>Course</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="enrTable"></tbody>
+          </table>
+        </section>
+      `;
+    }
+    function attachEnrollmentHandlers(){
+      const tbody = document.getElementById('enrTable');
+      tbody.innerHTML = data.enrollments.map(e=>{
+        const statusClass = e.status==='approved'?'ok':(e.status==='pending'?'warn':'danger');
+        return `<tr>
+          <td>${escapeHtml(e.studentName)}</td>
+          <td>${escapeHtml(e.courseTitle)}</td>
+          <td><span class="pill ${statusClass}">${e.status}</span></td>
+          <td class="actions">
+            <button class="small-btn" onclick="setEnrollStatus('${e.id}','approved')">Approve</button>
+            <button class="small-btn" onclick="setEnrollStatus('${e.id}','rejected')">Reject</button>
+            <button class="small-btn" onclick="deleteEnrollment('${e.id}')">Delete</button>
+          </td>
+        </tr>`;
+      }).join('');
+
+      document.getElementById('formEnroll').addEventListener('submit',(ev)=>{
+        ev.preventDefault();
+        const student = document.getElementById('enrStudent').value.trim();
+        const courseId = document.getElementById('enrCourse').value;
+        const status = document.getElementById('enrStatus').value;
+        const course = data.courses.find(c=>c.id===courseId);
+        data.enrollments.push({id:idGen(), studentName:student, courseId, courseTitle:course?course.title:'', status});
+        saveData();
+        navigate('enrollments');
+      });
+    }
+    function setEnrollStatus(id,status){
+      const idx = data.enrollments.findIndex(x=>x.id===id); if(idx<0) return;
+      data.enrollments[idx].status = status;
+      saveData();
+      navigate('enrollments');
+    }
+    function deleteEnrollment(id){
+      if(!confirm('Delete this enrollment?')) return;
+      data.enrollments = data.enrollments.filter(e=>e.id!==id);
+      saveData();
+      navigate('enrollments');
+    }
+
+    /* ---------- QUIZZES & ASSIGNMENTS ---------- */
+    function renderQuizzesAssignments(){
+      const quizList = data.quizzes.map(q=>`
+        <div style="padding:10px;border:1px solid #f1f2f6;border-radius:10px;margin-bottom:8px;background:#fff">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Q:</strong> ${escapeHtml(q.q)}</div>
+            <div>
+              <button class="small-btn" onclick="editQuiz('${q.id}')">Edit</button>
+              <button class="small-btn" onclick="deleteQuiz('${q.id}')">Delete</button>
+            </div>
+          </div>
+          <div style="margin-top:6px;color:var(--muted)">
+            ${q.opts.map((o,i)=>`<div>${i===q.ans?'<strong>✔</strong> ':''}(${i+1}) ${escapeHtml(o)}</div>`).join('')}
+          </div>
+        </div>`).join('');
+
+      const assignList = data.assignments.map(a=>`
+        <div style="padding:10px;border-bottom:1px solid #f3f4f6"><strong>${escapeHtml(a.title)}</strong> — <span style="color:var(--muted)">Due: ${a.due||'—'}</span></div>
+      `).join('');
+
+      return `
+        <section class="panel">
+          <h3 style="margin-top:0">Quizzes & Assignments</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div>
+              <h4>Create Quiz</h4>
+              <div style="margin-bottom:8px"><label>Question</label><input id="newQText" type="text"></div>
+              ${[1,2,3,4].map(n=>`<div style=\"margin-bottom:8px\"><label>Option ${n}</label><input id=\"opt${n}\" type=\"text\"></div>`).join('')}
+              <div style="margin-bottom:8px"><label>Correct Option (1-4)</label><input id="correctOpt" type="number" min="1" max="4"></div>
+              <div style="display:flex;gap:8px"><button onclick="addQuiz()">Add Question</button></div>
+              <hr/>
+              <h4>Quiz Bank</h4>
+              <div id="quizList">${quizList}</div>
+            </div>
+            <div>
+              <h4>Create Assignment</h4>
+              <div class="row">
+                <div style="flex:1"><label>Title</label><input id="asTitle" type="text"></div>
+                <div style="flex:1"><label>Due Date</label><input id="asDue" type="date"></div>
+              </div>
+              <div style="margin-bottom:8px"><label>Description</label><textarea id="asDesc" rows="3"></textarea></div>
+              <div style="display:flex;gap:8px"><button onclick="addAssignment()">Add Assignment</button></div>
+              <hr/>
+              <h4>Assignments</h4>
+              <div id="assignList">${assignList}</div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+    function attachQAHandlers(){ /* inline buttons use globals */ }
+    function addQuiz(){
+      const q = document.getElementById('newQText').value.trim();
+      const opts = [1,2,3,4].map(n=>document.getElementById('opt'+n).value.trim());
+      const c = parseInt(document.getElementById('correctOpt').value)-1;
+      if(!q || opts.some(o=>!o) || isNaN(c) || c<0 || c>3){ alert('Fill all quiz fields correctly'); return; }
+      data.quizzes.push({id:idGen(), q, opts, ans:c});
+      saveData();
+      navigate('quizzes');
+    }
+    function editQuiz(id){
+      const q = data.quizzes.find(x=>x.id===id); if(!q) return;
+      const newQ = prompt('Edit question:', q.q); if(newQ===null) return;
+      const newOpts = q.opts.map((o,i)=> prompt(`Edit option ${i+1}:`, o) ?? o);
+      const newAns = parseInt(prompt('Correct option (1-4):', (q.ans+1))) - 1;
+      if(!newQ || newOpts.some(o=>!o) || isNaN(newAns) || newAns<0 || newAns>3){ alert('Invalid inputs'); return; }
+      Object.assign(q, { q:newQ, opts:newOpts, ans:newAns });
+      saveData();
+      navigate('quizzes');
+    }
+    function deleteQuiz(id){
+      if(!confirm('Delete this question?')) return;
+      data.quizzes = data.quizzes.filter(x=>x.id!==id);
+      saveData();
+      navigate('quizzes');
+    }
+    function addAssignment(){
+      const t = document.getElementById('asTitle').value.trim();
+      const d = document.getElementById('asDesc').value.trim();
+      const due = document.getElementById('asDue').value;
+      if(!t){ alert('Title required'); return; }
+      data.assignments.push({id:idGen(), title:t, desc:d, due});
+      saveData();
+      navigate('quizzes');
+    }
+
+    /* ---------- PROGRESS ---------- */
+    function renderProgress(){
+      return `
+        <section class="panel">
+          <h3 style="margin-top:0">Student Progress</h3>
+          <table>
+            <thead><tr><th>Name</th><th>Email</th><th>Progress</th><th>Actions</th></tr></thead>
+            <tbody id="progTable"></tbody>
+          </table>
+        </section>
+      `;
+    }
+    function attachProgressHandlers(){
+      const tbody = document.getElementById('progTable');
+      tbody.innerHTML = data.students.map(s=>`
+        <tr>
+          <td>${escapeHtml(s.name)}</td>
+          <td>${escapeHtml(s.email)}</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="flex:1;height:10px;background:#f3f4f6;border-radius:999px;overflow:hidden">
+                <div style="width:${s.progress||0}%;height:100%;background:linear-gradient(90deg,var(--accent1),var(--accent2))"></div>
+              </div>
+              <span>${s.progress||0}%</span>
+            </div>
+          </td>
+          <td class="actions">
+            <button class="small-btn" onclick="updateProgress('${s.id}')">Update</button>
+            <button class="small-btn" onclick="removeStudent('${s.id}')">Remove</button>
+          </td>
+        </tr>`).join('');
+    }
+    function updateProgress(id){
+      const idx = data.students.findIndex(x=>x.id===id); if(idx<0) return;
+      const val = parseInt(prompt('Enter progress (0-100):', data.students[idx].progress||0));
+      if(isNaN(val) || val<0 || val>100){ alert('Invalid progress'); return; }
+      data.students[idx].progress = val; saveData(); navigate('progress');
+    }
+    function removeStudent(id){
+      if(!confirm('Remove this student?')) return;
+      data.students = data.students.filter(s=>s.id!==id); saveData(); navigate('progress');
+    }
+
+    /* ---------- REPORTS & ANALYTICS ---------- */
+    function renderReports(){
+      return `
+        <section class="panel">
+          <h3 style="margin-top:0">Reports & Analytics</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div class="panel"><h4>Enrollments by Course</h4><canvas id="repEnrollByCourse"></canvas></div>
+            <div class="panel"><h4>Revenue Trend (mock)</h4><canvas id="repRevenueTrend"></canvas></div>
+          </div>
+        </section>
+      `;
+    }
+    let rep1=null, rep2=null;
+    function attachReportHandlers(){
+      const ctx1 = document.getElementById('repEnrollByCourse').getContext('2d');
+      const labels = data.courses.map(c=>c.title);
+      const counts = labels.map(t => data.enrollments.filter(e=>e.courseTitle===t && e.status==='approved').length);
+      if(rep1) rep1.destroy();
+      rep1 = new Chart(ctx1, { type:'pie', data:{ labels, datasets:[{ data:counts }] }, options:{responsive:true} });
+
+      const ctx2 = document.getElementById('repRevenueTrend').getContext('2d');
+      // mock monthly revenue = random but scaled by total approved
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const base = data.enrollments.filter(e=>e.status==='approved').length * 500;
+      const series = months.map(()=> Math.max(0, Math.round(base + (Math.random()*400 - 200))));
+      if(rep2) rep2.destroy();
+      rep2 = new Chart(ctx2, { type:'line', data:{ labels:months, datasets:[{ label:'Revenue (₹)', data:series, tension:.35 }] }, options:{responsive:true, plugins:{legend:{display:false}}} });
+    }
+
+    /* ---------- SETTINGS ---------- */
+    function renderSettings(){
+      return `
+        <section class="panel">
+          <h3 style="margin-top:0">Settings</h3>
+          <div class="row">
+            <div style="flex:1">
+              <label>Institute Name</label>
+              <input id="setName" type="text" value="${escapeHtml(data.settings.instituteName||'')}">
+            </div>
+            <div style="flex:1">
+              <label>Currency</label>
+              <select id="setCurrency">
+                <option value="INR" ${data.settings.currency==='INR'?'selected':''}>INR (₹)</option>
+                <option value="USD" ${data.settings.currency==='USD'?'selected':''}>USD ($)</option>
+                <option value="EUR" ${data.settings.currency==='EUR'?'selected':''}>EUR (€)</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px"><button onclick="saveSettings()">Save Settings</button><button class="small-btn" onclick="navigate('dashboard')">Back</button></div>
+        </section>
+      `;
+    }
+    function attachSettingsHandlers(){ /* nothing extra */ }
+    function saveSettings(){
+      data.settings.instituteName = document.getElementById('setName').value.trim();
+      data.settings.currency = document.getElementById('setCurrency').value;
+      saveData();
+      alert('Settings saved');
+    }
+
+    /* Helpers */
+    function escapeHtml(s){ return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+    /* init */
+    function init(){
+      updateDashboardCards();
+      renderEnrollChart();
+    }
+    init();
+
+    // expose functions for inline handlers
+    window.navigate = navigate;
+    // courses
+    window.editCourse = editCourse; window.saveCourse = saveCourse; window.removeCourse = removeCourse;
+    // instructors
+    window.editInstr = editInstr; window.saveInstr = saveInstr; window.removeInstr = removeInstr;
+    // enrollments
+    window.setEnrollStatus = setEnrollStatus; window.deleteEnrollment = deleteEnrollment;
+    // quizzes & assignments
+    window.addQuiz = addQuiz; window.editQuiz = editQuiz; window.deleteQuiz = deleteQuiz; window.addAssignment = addAssignment;
+    // progress
+    window.updateProgress = updateProgress; window.removeStudent = removeStudent;
+    // settings
+    window.saveSettings = saveSettings;
+  </script>
+</body>
+</html>

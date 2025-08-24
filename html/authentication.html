@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Signup Page</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #5d52a6, #4c9fa1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .signup-container {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    height: 500px;
+    width: 350px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+  h2 {
+    margin-bottom: 1rem;
+  }
+  .oauth-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .oauth-button {
+    flex: 1;
+    margin: 0 0.3rem;
+    padding: 0.5rem;
+    background: #eee;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .oauth-button .icon {
+    margin-right: 6px;
+  }
+  .divider {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+  }
+  .divider hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid #ccc;
+  }
+  .divider span {
+    margin: 0 0.5rem;
+    color: #555;
+  }
+  select, input {
+    width: 100%;
+    padding: 0.7rem;
+    margin: 0.5rem 0;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  input::placeholder {
+    color: #999;
+  }
+  button.signup-btn {
+
+    background: linear-gradient(90deg, #A445B2 0%, #D41872 100%);
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    padding: 0.7rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  p.login-text {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  p.login-text a {
+    font-weight: bold;
+    color: #592c7a;
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+  <div class="signup-container">
+    <h2>Sign up with</h2>
+    <div class="oauth-buttons">
+      <button class="oauth-button">
+        <span class="icon" style="color:#db4437;">G</span> Google
+      </button>
+      <!-- <button class="oauth-button">
+        <span class="icon"></span> Apple
+      </button> -->
+    </div>
+
+    <div class="divider">
+      <hr /><span>or</span><hr />
+    </div>
+
+    <!-- Role selection dropdown -->
+    <select id="userRole" name="userRole" required>
+      <option value="" disabled selected>Select Role</option>
+      <option value="student">Student</option>
+      <option value="instructor">Instructor</option>
+      <option value="admin">Admin</option>
+    </select>
+
+    <form id="signupForm">
+      <input type="text" name="fullName" placeholder="Full Name" required />
+      <input type="email" name="email" placeholder="Email address" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+      <button type="submit" class="signup-btn">Sign Up</button>
+    </form>
+
+    <p class="login-text">
+      Already have an account? <a href="login form.html">Log in</a>
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const role = document.getElementById('userRole').value;
+      if (!role) {
+        alert('Please select a user role');
+        return;
+      }
+
+      const fullName = form.fullName.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+      const confirmPassword = form.confirmPassword.value;
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+      }
+
+      // You can now send this data to backend or process it further
+      alert(`Signing up as ${role}:\nName: ${fullName}\nEmail: ${email}`);
+
+      // Reset form for demo
+      form.reset();
+      document.getElementById('userRole').selectedIndex = 0;
+    });
+  </script>
+</body>
+</html>

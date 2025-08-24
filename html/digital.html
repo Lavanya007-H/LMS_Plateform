@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<style>
+    /*header section code*/
+     body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+  header {
+    background-color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #333;
+  }
+ .stars
+{
+    color: #f1c40f;
+}
+  .my-dashboard
+  {
+    background-color: #9333ea;
+    height: 50px;
+    width: 130px;
+    color: white;
+    border: none;
+    border-radius: 3px;
+  }
+   .my-dashboard a{
+    text-decoration: none;
+    color: white;
+   }
+.buynow-button
+{
+    height: 40px;
+    width: 100px;
+     background: linear-gradient(90deg, #A445B2 0%, #D41872 100%);
+    border: none;
+    border-radius: 3px;
+    
+}
+.buynow-button a {
+    text-decoration: none;
+    color: #ffff;
+}
+ 
+main {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.course-info {
+    
+    
+    width: 60%;
+}
+
+.course-info h1 {
+    font-size: 36px;
+    margin-top: 0;
+    
+}
+.video-player {
+    width: 50%;
+}
+
+.video-player img {
+    width: 400px;
+    height: 150px;
+    object-fit: cover;
+    padding-left: 100px;
+}
+
+footer {
+    background-color: #f0f0f0;
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #ddd;
+}
+
+.course-page {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.course-requirements, .what-youll-learn, .course-details {
+    margin-bottom: 40px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+li:before {
+    content: "\2713";
+    margin-right: 10px;
+    color: #666;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.container {
+    max-width: 380px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.course-price {
+    margin-bottom: 20px;
+}
+
+.course-price h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.course-price span {
+    text-decoration: line-through;
+    color: #666;
+}
+
+.course-actions {
+    margin-bottom: 20px;
+}
+.course-includes {
+    margin-bottom: 20px;
+}
+
+.course-includes h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.course-includes ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.course-includes li {
+    margin-bottom: 10px;
+}
+
+.course-includes i {
+    margin-right: 10px;
+}
+
+.course-footer {
+    margin-top: 20px;
+}
+
+
+span
+{
+    color: #9b06a9;
+    padding-right: 20px;
+}
+.course-container {
+    max-width: 700px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  /* Progress Bar */
+  .course-container
+  {
+    max-width: 1000px;
+    margin-bottom: 50px ;
+  }
+  .progress-container {
+    margin-bottom: 20px;
+    background: #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 25px;
+  }
+  .progress-bar {
+    height: 100%;
+    width: 0;
+    background: #28a745;
+    transition: width 0.5s;
+  }
+  /* Course Parts */
+  .course-part {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    background: #fafafa;
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  .course-part.completed {
+    background: #d4edda;
+  }
+  .course-part span {
+    flex: 1;
+  }
+  .play-btn {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(90deg, #8e2de2, #4a00e0); /* purple to blue */
+    transition: transform 0.2s;
+  }
+  .play-btn:hover {
+    transform: scale(1.1);
+  }
+  /* Confetti canvas */
+  #confetti-canvas {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:9999;
+  }
+/* instructor */
+.instructor-card {
+        display: flex;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        padding: 20px;
+        max-width: 950px;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 50px;
+    }
+
+    .instructor-card img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    .info h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .info p.role {
+        color: gray;
+        font-size: 14px;
+        margin: 2px 0 10px;
+    }
+
+    .stats {
+        display: flex;
+        gap: 15px;
+        margin: 8px 0;
+        font-size: 14px;
+        flex-wrap: wrap;
+    }
+
+    .stats div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: #333;
+    }
+
+    .stats i {
+        color: #8e44ad;
+    }
+
+    .desc {
+        font-size: 13px;
+        color: #555;
+        margin-top: 8px;
+    }
+
+    .rating {
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 14px;
+    }
+
+    .rating i {
+        color: gold;
+    }
+/* Frequently asked questions */
+.faq-container {
+    max-width: 1000px;
+    margin-bottom: 50px;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .faq-question {
+    padding: 15px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-answer {
+    display: none;
+    padding: 10px 10px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .faq-question::after {
+    content: '+';
+    font-size: 18px;
+    transition: transform 0.3s;
+  }
+
+  .faq-question.active::after {
+    content: '-';
+    transform: rotate(180deg);
+  }
+
+/*footer section code*/
+footer {
+    background-color: #ece8f5;
+    padding: 20px;
+    text-align: left;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.footer-section {
+    width: 25%;
+    padding: 10px;
+}
+
+.footer-section h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section li {
+    margin-bottom: 10px;
+}
+
+.footer-section a {
+    text-decoration: none;
+    color: #333;
+}
+
+.footer-section li:hover {
+    color: #666;
+}
+
+.social-media {
+    margin-top: 20px;
+}
+
+.social-media li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.copyright {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+</style>
+<body>
+        <!-- header section code -->
+        <header>
+            <div class="nav-left">
+              <div class="logo">SHIKSHA SETU</div>
+            </div>
+              <div class="buttons">
+                <button class="my-dashboard"><a href="studentdashboard1.html">My dashboard</a></button>
+              </div>
+            </div>
+          </header>
+        <main>
+            <div class="course-info">
+                <h1> Digital Marketing  full course 2025</h1>
+                <h3>About this course</h3>
+                <p>Digital marketing promotes products or services online using SEO, content, social media, email, and ads to reach target audiences, drive traffic, and increase sales.</p>
+                <p>Level: Beginners</p>
+                <p>Level: Beginners</p>
+                <p>Price:₹ 1</p>
+           <div class="stars">★★★★☆</div>
+            <center><button class="buynow-button"><a href="paymentsection.html">Buy Now</a></button></center>
+            </div>
+            <div class="video-player">
+                <iframe width="670" height="377" src="https://www.youtube.com/embed/ubaXGSAcbpk" title="Digital Marketing Full Course 2025 | Digital Marketing Tutorial For Beginners | Simplilearn" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                
+            </div>
+        </main>
+        
+        <div class="course-page">
+            <div class="course-requirements">
+                <h2>Course Requirements</h2>
+                <ul>
+                    <li>Search Engine Optimization (SEO)</li>
+                    <li>Content Marketing</li>
+                    <li>Social Media Marketing</li>
+                    <li>Email Marketing</li>
+                    <li>Pay-Per-Click (PPC) Advertising</li>
+                    <li>Analytics & Performance Tracking</li>
+                    <li>Affiliate & Influencer Marketing</li>
+                </ul>
+            </div>
+            <div class="course-details">
+                <h2>This course includes:</h2>
+                <ul>
+                    <li>10 hours on-demand video</li>
+                    <li>20 downloadable resources</li>
+                    <li>Access on mobile and TV</li>
+                    <li>Full lifetime access</li>
+                    <li>Certificate of completion</li>
+                    <li>Bonus eBooks & study materials</li>
+                    <li>24/7 instructor support</li>
+                </ul>
+            </div>
+        </div>
+        <center>
+        <div class="course-container">
+            <!-- video parts section -->
+          
+  <h2>Digital Marketing Full Course 2025</h2>
+
+  <!-- Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar"></div>
+  </div>
+
+  <!-- Course Parts -->
+  <div class="course-part" data-start="0">
+    <span>Part 1: Introduction (0:00 - 10:00)</span>
+    <button class="play-btn">Play</button>
+  </div>
+  <div class="course-part" data-start="600">
+    <span>Part 2: SEO Basics (10:00 - 20:00)</span>
+    <button class="play-btn">Play</button>
+  </div>
+  <div class="course-part" data-start="1200">
+    <span>Part 3: Social Media Marketing (20:00 - 30:00)</span>
+    <button class="play-btn">Play</button>
+  </div>
+  <div class="course-part" data-start="1800">
+    <span>Part 4: Email Marketing (30:00 - 40:00)</span>
+    <button class="play-btn">Play</button>
+  </div>
+  <div class="course-part" data-start="2400">
+    <span>Part 5: Content Marketing (40:00 - 50:00)</span>
+    <button class="play-btn">Play</button>
+  </div>
+  <div class="course-part" data-start="3000">
+    <span>Part 6: PPC & Ads (50:00 - 60:00)</span>
+    <button class="play-btn">Play</button>
+  </div>
+  <div class="course-part" data-start="3600">
+    <span>Part 7: Analytics & Wrap-Up (60:00 - 70:00)</span>
+    <button class="play-btn">Play</button>
+  </div>
+</div>
+
+<!-- Confetti canvas -->
+<canvas id="confetti-canvas"></canvas>
+
+     </center>
+        <!-- Instructor page section-->
+        <center>
+            <div class="instructor-card">
+         <img src="../images/Radha.png" alt="Instructor">
+    <div class="info">
+        <h2>Radha Sharma</h2>
+        <p class="role">Pro Instructor</p>
+        
+        <div class="stats">
+            <div><i class="fa-solid fa-book"></i> <b>12</b> Courses</div>
+            <div><i class="fa-solid fa-user"></i> <b>20,000</b> Students</div>
+            <div><i class="fa-solid fa-comment"></i> <b>2,500</b> Reviews</div>
+        </div>
+
+        <p class="desc">Radha Sharma has over 10 years of experience in the industry, teaching thousands of students worldwide.</p>
+        
+        <div class="rating">
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star-half-alt"></i>
+            <span>(4.5)</span>
+        </div>
+    </div>
+</div></center>
+<!-- Digital marketing FAQs -->
+ <center>
+<h2 style="text-align:center;">Digital Marketing FAQs 2025</h2>
+
+<div class="faq-container">
+  <div class="faq-item">
+    <div class="faq-question">1. What is Digital Marketing?</div>
+    <div class="faq-answer">
+      Digital Marketing is the promotion of products or services using digital channels such as search engines, social media, email, and websites.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">2. Why is SEO important?</div>
+    <div class="faq-answer">
+      SEO helps improve the visibility of a website in search engine results, driving organic traffic and improving brand credibility.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">3. What is Social Media Marketing?</div>
+    <div class="faq-answer">
+      Social Media Marketing involves creating content and advertisements on platforms like Facebook, Instagram, and LinkedIn to engage the audience and grow the brand.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">4. What is PPC advertising?</div>
+    <div class="faq-answer">
+      PPC (Pay-Per-Click) advertising is where advertisers pay a fee each time their ad is clicked, commonly seen in Google Ads and social media campaigns.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-question">5. How to measure digital marketing success?</div>
+    <div class="faq-answer">
+      Success can be measured using KPIs such as website traffic, conversion rates, social media engagement, ROI, and lead generation.
+    </div>
+  </div>
+</div>
+        </center>
+        <!-- footer section code-->
+        <footer>
+            <div class="footer-container">
+                <div class="skillmine">
+                    <h2>EXCELL SKILL</h2>
+                    <!-- <ul class="social-media">                                    
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>                                      
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    </ul> -->
+                    <p>Terms of Use</p>
+                    <p>Privacy Policy</p>
+                </div>
+                <div class="about">
+                    <h2>About</h2>
+                    <ul> 
+                        <li>About Us</li>                  
+                        <li>Services</li>  
+                        <li>Pricing</li>               
+                        <li>Blog</li>
+                        <li>Contact</li>  
+                     
+                    </ul>
+                </div>
+                <div class="quick-links">
+                    <h2>Quick Links</h2>
+                    <ul>
+                        <li>Gallery</li>
+                        <li>Library</li>  
+                        <li>Partners</li>
+                        <li>Career</li>  
+                        <li>News & Blogs</li>
+                    </ul>
+                </div>
+                <div class="support">
+                    <h2>Support</h2>
+                    <ul>
+                        <li>FAQs</li>  
+                        <li>Forum</li>
+                        <li>Sidemaps</li>  
+                        <li>Documentation</li>    
+                        <li>Contact</li>                 
+                    </ul>
+                </div>
+            </div>
+            <p class="copyright">Copyright &copy; 2025 Excell Skill. All rights reserved.</p>
+        </footer>
+        <script>
+            const progressBar = document.querySelector('.progress-bar');
+const parts = document.querySelectorAll('.course-part');
+let completedParts = 0;
+
+parts.forEach((part, index) => {
+    const btn = part.querySelector('.play-btn');
+    btn.addEventListener('click', () => {
+        // Redirect to YouTube at correct timestamp
+        const start = parseInt(part.dataset.start);
+        const youtubeURL = `https://www.youtube.com/watch?v=ubaXGSAcbpk&t=${start}s`;
+        window.open(youtubeURL, '_blank');
+
+        // Mark part as completed
+        if(!part.classList.contains('completed')){
+            part.classList.add('completed');
+            completedParts++;
+            progressBar.style.width = `${(completedParts / parts.length) * 100}%`;
+
+            // Confetti after all parts completed
+            if(completedParts === parts.length){
+                launchConfetti();
+            }
+        }
+    });
+});
+
+// Confetti animation
+function launchConfetti(){
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confetti = [];
+    for(let i=0;i<150;i++){
+        confetti.push({
+            x: Math.random()*canvas.width,
+            y: Math.random()*canvas.height - canvas.height,
+            r: Math.random()*6+4,
+            d: Math.random()*20+10,
+            color: `hsl(${Math.random()*360},100%,50%)`,
+            tilt: Math.random()*10-10,
+            tiltAngleIncremental: Math.random()*0.07+0.05,
+            tiltAngle:0
+        });
+    }
+
+    let animation;
+    function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        confetti.forEach(c=>{
+            ctx.beginPath();
+            ctx.lineWidth = c.r/2;
+            ctx.strokeStyle = c.color;
+            ctx.moveTo(c.x+c.tilt+c.r/4, c.y);
+            ctx.lineTo(c.x+c.tilt, c.y+c.tilt+c.r/4);
+            ctx.stroke();
+        });
+        update();
+        animation = requestAnimationFrame(draw);
+    }
+
+    function update(){
+        confetti.forEach(c=>{
+            c.tiltAngle += c.tiltAngleIncremental;
+            c.y += (Math.cos(c.d)+3+c.r/2)/2;
+            c.tilt = Math.sin(c.tiltAngle)*15;
+            if(c.y>canvas.height){
+                c.y=-10;
+                c.x=Math.random()*canvas.width;
+            }
+        });
+    }
+
+    draw();
+    setTimeout(()=> cancelAnimationFrame(animation),5000);
+}
+// faqs section
+
+  const faqQuestions = document.querySelectorAll('.faq-question');
+
+  faqQuestions.forEach(question => {
+    question.addEventListener('click', () => {
+      question.classList.toggle('active');
+      const answer = question.nextElementSibling;
+      if (answer.style.display === "block") {
+        answer.style.display = "none";
+      } else {
+        answer.style.display = "block";
+      }
+    });
+  });
+
+        </script>
+</body>
+</html>

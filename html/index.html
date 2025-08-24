@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LMS JAVA</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link
+  href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+  rel="stylesheet"
+/>
+</head>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  header {
+    background-color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: black;
+  }
+  .logo-skill
+  {
+    color: #a855f7;
+  }
+
+  .search-bar input {
+    height: 25px;
+    width: 350px;
+    border-radius: 5px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    
+    
+  }
+  
+  .search-bar {
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .explore-btn {
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      background-color: #f9f9f9;
+      cursor: pointer;
+      border-radius: 4px;
+      height: 50px;
+      width: 150px;
+      /* border: 2px solid #9333ea; */
+    }
+    
+    .explore-btn:hover{
+        border: 2px solid #9333ea;
+    }
+  .explore-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-container {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  z-index: 1000;
+  width: 280px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+}
+    .dropdown-container h3 {
+      margin-top: 0;
+      font-size: 16px;
+      color: #000;
+    }
+
+    .dropdown-container ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .dropdown-container li {
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .dropdown-container li:hover {
+      text-decoration: underline;
+     color: #9333ea;
+    }
+    
+    .reviews a
+    {
+      text-decoration: none;
+    }
+    
+    
+.login-btn
+{
+ 
+    height: 50px;
+      width: 150px;
+    font-weight: bold;
+    border: none;
+    border-radius: 3px  ;
+    margin-right: 30px;
+    /* border: 2px solid #9333ea; */
+
+  }
+    
+  .login-btn a{
+   text-decoration: none;
+  }
+  .login-btn:hover
+  {
+    border: 2px solid #9333ea; 
+  }
+  .signup-btn {
+  
+    height: 50px;
+      width: 150px;
+    font-weight: bold;
+     border: none; 
+    /* border: 2px solid #9333ea; */
+    border-radius: 3px  ;
+  }
+    
+  .signup-btn a
+  {
+    text-decoration: none;
+  }
+  .signup-btn:hover
+  {
+     border: 2px solid #9333ea; 
+  }
+  
+  .hero-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 50px 100px;
+      background-color: #f9f9f9;
+    }
+    .hero-text {
+      flex: 1;
+      max-width: 50%;
+     
+    }
+
+    .hero-text h1 {
+      font-size: 32px;
+      color: #222;
+      margin-bottom: 20px;
+    }
+
+    .hero-text p {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .hero-text button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #a855f7; /* purple */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .hero-text button:hover {
+      background-color: #9333ea;
+    }
+
+    .hero-image {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .hero-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 768px) {
+      .hero-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px;
+      }
+
+      .hero-text, .hero-image {
+        max-width: 100%;
+      }
+
+      .hero-image {
+        margin-top: 30px;
+        justify-content: center;
+      }
+    }
+    .highlights
+    {
+      height: 100px;
+      width: 100%;
+      /* background-color: #da62df; */
+      background: linear-gradient(90deg, #A445B2 0%, #D41872 100%);
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+
+    }
+    
+  /* brand logos scroll behaviour*/
+  .brand-logos {
+  width: 100%;
+  overflow: hidden;
+  background: #f9f9f9;
+  padding: 20px 0;
+}
+
+.logo-container {
+  display: flex;
+  gap: 60px;
+   animation: scroll-left 50s linear infinite; 
+  width: max-content;
+}
+
+.logo-container img {
+  height: 150px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.logo-container img:hover {
+  transform: scale(1.1);
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+/*popular courses*/
+.course-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    width: 80%;
+    margin: 40px auto;
+    
+}
+.stars 
+{
+  color: #f1c40f;
+}
+
+.course-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+}
+.course-card:hover
+{
+  transform: scale(1.05);
+}
+
+.course-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.course-info {
+    padding: 20px;
+}
+
+.course-info h2 {
+    margin-top: 0;
+}
+
+.course-info p {
+    margin-bottom: 10px;
+}
+.enroll a
+{
+text-decoration: none;
+color: white;
+}
+.enroll{
+  height: 40px;
+  width: 100px;
+   color: white; 
+  /* background-color: #9333ea; */
+  background: linear-gradient(90deg, #A445B2 0%, #D41872 100%);
+  border: none;
+  border-radius: 5px;
+}
+/* Become an instructor code*/
+.container {
+    margin-top: 40px;
+    display: flex;
+    height: 100vh;
+}
+
+.left-panel {
+    background-color: #f0f0f0;
+    padding: 20px;
+    width: 50%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.left-panel h1 {
+    margin-top: 0;
+}
+
+.left-panel ul {
+    list-style: none;
+    padding: 0;
+}
+
+.left-panel li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.left-panel li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: purple;
+    border-radius: 50%;
+}
+
+.right-panel {
+    width: 50%;
+}
+
+.right-panel img {
+    width: 100%;
+    height: 87%;
+    object-fit: cover;
+}
+/* Transform access into education*/
+.student-access-container {
+      display: flex;
+      height: 100vh;
+      margin-top: 20px;
+    }
+
+    .left {
+      width: 50%;
+    }
+
+    .left img {
+      width: 100%;
+      height: 80%;
+      object-fit: cover;
+    }
+
+    .right {
+      width: 50%;
+      background: #fff;
+      padding: 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .right h1 {
+      
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .right p {
+      color: #555;
+      font-size: 16px;
+      margin-bottom: 40px;
+    }
+
+    .right ul {
+      list-style: none;
+      margin-bottom: 30px;
+    }
+
+    .right ul li {
+      margin-bottom: 10px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .right ul li::before {
+      content: '\f058'; /* FontAwesome check-circle icon */
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      color: #a442f5;
+      margin-right: 10px;
+    }
+
+    /*.right .register-btn {
+      background-color: #a442f5;
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: fit-content;
+      margin-bottom: 150px;
+     
+    }
+
+    .right .register-btn:hover {
+      background-color: #892ee0;
+    }*/
+
+    /* student reviews section code*/
+
+    .feedback-section {
+      max-width: 1200px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .feedback-section h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    .slider-container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feedback-slider {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .feedback-card {
+      flex: 0 0 100%;
+      max-width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .card-box {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin: 0 20px;
+    }
+
+    .card-box img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    .card-box h4 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .card-box .stars {
+      color: #f1c40f;
+      margin-bottom: 10px;
+    }
+
+    .card-box p {
+      font-size: 15px;
+      color: #555;
+    }
+
+    .dots {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .dot {
+      height: 12px;
+      width: 12px;
+      margin: 0 5px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+      margin-bottom: 40px;
+    }
+
+    .dot.active {
+      background-color: #a442f5;
+    }
+
+    /* Responsive card widths */
+    @media (min-width: 600px) {
+      .feedback-card {
+        flex: 0 0 50%;
+        max-width: 50%;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .feedback-card {
+        flex: 0 0 25%;
+        max-width: 25%;
+      }
+    }
+/*footer section code*/
+footer {
+    background-color: #ebe7f5;
+    padding: 20px;
+    text-align: left;
+   
+    
+}
+    
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+   
+   
+}
+
+.footer-section {
+    width: 25%;
+    padding: 10px;
+ 
+}
+
+.footer-section h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.footer-section li {
+  
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section li {
+    margin-bottom: 10px;
+
+    
+}
+
+.footer-section li {
+    text-decoration: none;
+    color: #333;
+    
+}
+
+.footer-section li:hover {
+    color: #c43bb4;
+}
+
+
+.social-media {
+    margin-top: 20px;
+}
+
+.social-media li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.copyright {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+</style>
+<body>
+
+  <header>
+    <div class="nav-left">
+      <div class="logo">
+        SHIKSHA <span class="logo-skill">SETU</span>
+      </div>
+      <!--<i class="fas fa-bars"></i>-->
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="courseSearchInput" placeholder="Search Courses...">
+    </div>
+    
+   <!-- Dropdown Wrapper -->
+<div class="explore-wrapper">
+  <button class="explore-btn" onclick="toggleDropdown()">Categories ▼</button>
+
+  <div class="dropdown-container" id="dropdown">
+    <h3>Explore courses</h3>
+    <ul>
+      <a href="./datascience.html"><li>Data Science</li></a>
+      <a href="Cybersecurity.html"><li>Cyber Security</li></a>
+      <a href="ArtificialIntelligence.html"><li>Artificial Intelligence</li></a>
+      <a href="financial.html"><li>Financial Marketing</li></a>
+      <a href="digital.html"><li>Digital Marketing</li></a>
+       <a href="webdevelopment.html"><li>Web Development</li>
+    </ul>
+  </div>
+</div>
+
+      <div class="reviews">
+<a href="#studentreviews">Reviews</a>
+      </div>
+      
+      <!--<div class="cart-icon">
+        <i class="fas fa-cart-shopping"></i>
+        <span>4</span>
+      </div>-->
+      <div class="buttons">
+        <button class="login-btn"><a href="loginform.html">Log In</a></button>
+        <button class="signup-btn"><a href="signuppage.html">Sign Up</a></button>
+
+      </div>
+  </header>
+<!-- hero section code-->
+  <div class="hero-section">
+    <div class="hero-text">
+      <h1 class="chronicles-quote">...  Your work shall be rewarded! ...</h1>
+      <p>A unique feature of the platform is the “₹1 for 30 Days Challenge,” allowing users to access any course for 30 days at a nominal fee of just ₹1.</p>
+      
+      <button>Get Started</button>
+    </div>
+    <div class="hero-image">
+      <img src="../images/herosectionimage.png" alt="Inspiring Teacher">
+    </div>
+  </div>
+
+    <!--<div class="hero-search">
+      <input type="text" placeholder="Search courses...">
+    </div>-->
+  </section>
+  
+    <!-- Highlights Section -->
+    <section class="highlights">
+     <div class="purple">
+<span class="purple"><img src="../images/brandlogo1.png" alt="" style="height: 20px; width: 30px;" controls>Learn The Essential Skills</span>
+<span class="purple"><img src="../images/certiicate.png" alt="" style="height: 20px; width: 30px;" controls>Earn Certificates and Degrees</span>
+<span class="purple"><img src="../images/career.png" alt="" style="height: 20px; width: 30px;" controls>Get Ready for the Next Career</span>
+<span class="purple"><img src="../images/masterdegree.png" alt="" style="height: 20px; width: 30px;" controls>Master at Different Areas</span>
+     </div>
+    </section>
+
+     <!-- BRAND LOGOS SECTION -->
+<section class="brand-logos">
+
+  <div class="logo-container">
+    <img src="../images/google.png" alt="Brand 1">
+    <img src="../images/duke.png" alt="Brand 2">
+    <img src="../images/ibm.png" alt="Brand 3">
+    <img src="../images/michigan.png" alt="Brand 4">
+    <img src="../images/johnhopkins.png" alt="Brand 5">
+    <img src="../images/harvard.png" alt="Brand 6">
+    <img src="../images/aws.png" alt="Brand 1 Duplicate">
+    <img src="../images/queensland.png" alt="Brand 2 Duplicate">
+    <img src="../images/texas.png" alt="Brand 2 Duplicate">
+    <!-- repeat logos to create infinite effect -->
+  </div>
+    <!-- courses section-->
+     <section class="courses">
+      <center><h1>POPULAR COURSES</h1></center>
+      <body>
+        <div class="course-container">
+            <div class="course-card" style="border-radius: 10px;" id="web development">
+                <img src="../images/web.png" alt="Image 1" style="border-radius: 10px;">
+                <div class="course-info">
+                    <h2> Web Development</h2>
+                   <div class="stars">★★★★☆</div>
+                    <p>Beginner . Advanced</p>
+                    <center><button class="enroll" ><a href="webdevelopment.html">Go to Course</a></button></center>
+                </div>
+            </div>
+            <div class="course-card" style="border-radius: 10px;" id="ArtificialIntelligence">
+                <img src="../images/AI.png" alt="Image 2"style="border-radius: 10px;">
+                <div class="course-info">
+                <h2>Introduction to Artificial Intelligence(AI)</h2>
+                   <div class="stars">★★★★☆</div>
+                    <p>Beginner . Advanced</p>
+                    <center><button class="enroll"><a href="ArtificialIntelligence.html">Go to Course</a></button></center>
+                </div>
+            </div>
+            <div class="course-card" style="border-radius: 10px;" id="financial">
+                <img src="../images/business.png" alt="Image 3"style="border-radius: 10px;">
+                <div class="course-info">
+                    <h2>Financial Markets</h2>
+                    <div class="stars">★★★★☆</div>
+                    <p>Beginner • Advanced </p>
+                    <center><button class="enroll"><a href="financial.html">Go to Course</a></button></center>
+                </div>
+            </div>
+            <div class="course-card" style="border-radius: 10px;" id="Cybersecurity">
+                <img src="../images/cyber copy.png" alt="Image 4" style="border-radius: 10px;">
+                <div class="course-info">
+                    <h2>Cyber Security</h2>
+                   <div class="stars">★★★★☆</div>
+                    <p>Beginner • Advanced  </p>
+                    <center><button class="enroll"><a href="Cybersecurity.html">Go to Course</a></button></center>
+                </div>
+            </div>
+            <div class="course-card" style="border-radius: 10px;" id="datascience">
+                <img src="../images/datascience .png" alt="Image 5" style="border-radius: 10px;">
+                <div class="course-info">
+                    <h2>Data Science</h2>
+                    <div class="stars">★★★★☆</div>
+                    <p>Beginner • Advanced</p>
+                    <center><button class="enroll"><a href="datascience.html">Go to Course</a></button></center>
+                </div>
+            </div>
+            <div class="course-card" style="border-radius: 10px;" id="digital">
+                <img src="../images/digital.png" alt="Image 6"style="border-radius: 10px;">
+                <div class="course-info">
+                    <h2>Digital Marketing</h2>
+                  <div class="stars">★★★★☆</div>
+                    <p>Beginner • Advanced</p>
+                    <center><button class="enroll"><a href="digital.html">Go to Course</a></button></center>
+                </div>
+            </div>
+        </div>
+
+        <!-- Become an instructor code-->
+        <div class="container">
+          <div class="left-panel">
+              <h1>Become An Instructor</h1>
+              <p>Top instructors from across the globe educate millions of students on ExcelSkill. Renowned experts from various fields share their knowledge, empowering learners worldwide.</p>
+              <ul>
+                  <li>Teach What You Know</li>
+                  <li>Reach Global Learners</li>
+                  <li>Flexible Schedule</li>
+                  <li>Track Student Progress</li>
+                  <li>Get Dedicated Instructor Support</li>
+                  <li>Start for Free</li>
+              </ul>
+           
+          </div>
+          <div class="right-panel">
+              <img src="../images/teaching.png" alt="Classroom Scene" >
+          </div>
+      </div>
+      <!-- Transform access to education -->
+      <div class="student-access-container">
+        <div class="left">
+          <img src="../images/tranformeducation.png" alt="Classroom">
+        </div>
+        <div class="right">
+          <h1>Transform Access to Education</h1>
+          <p>Breaking barriers through affordable, high-quality learning for all — empowering individuals worldwide with skills, opportunities, and knowledge to thrive in the modern world.</p>
+          <ul>
+            <li>₹1 for 30-day unlimited course access.</li>
+            <li>Courses by expert instructors across multiple fields.</li>
+            <li>Mobile and desktop-friendly platform.</li>
+            <li>Student, Instructor, and Admin roles.</li>
+            <li>Secure payments and subscription management.</li>
+            <li>Multilingual content support for global reach.</li>
+            <li>Designed for scalability and high performance.</li>
+          </ul>
+          <!--<button class="register-btn">Register for free</button>-->
+        </div>
+      </div>
+      <!-- Student reviews section -->
+       <section id="studentreviews">
+       <div class="feedback-section">
+  <h2>What Our Students Say</h2>
+
+  <div class="slider-container" id="slider-container">
+    <div class="feedback-slider" id="slider">
+      <!-- 10 Feedback Cards with Images -->
+      <div class="feedback-card"><div class="card-box"><img src="https://randomuser.me/api/portraits/men/1.jpg"><h4>John Doe</h4><div class="stars">★★★★★</div><p>Excellent platform! ₹1 challenge kept me motivated.</p></div></div>
+      <div class="feedback-card"><div class="card-box"><img src="https://randomuser.me/api/portraits/women/2.jpg"><h4>Sneha Reddy</h4><div class="stars">★★★★☆</div><p>Great videos and support. Loved it!</p></div></div>
+      <div class="feedback-card"><div class="card-box"><img src="https://randomuser.me/api/portraits/men/3.jpg"><h4>Aarav Kumar</h4><div class="stars">★★★★★</div><p>Completed 2 courses in 30 days. Super helpful!</p></div></div>
+      <div class="feedback-card"><div class="card-box"><img src="https://randomuser.me/api/portraits/women/4.jpg"><h4>Emily Thomas</h4><div class="stars">★★★★☆</div><p>Very beginner-friendly and organized.</p></div></div>
+      <div class="feedback-card"><div class="card-box"><img src="https://randomuser.me/api/portraits/men/5.jpg"><h4>Rahul Sharma</h4><div class="stars">★★★★★</div><p>Course quality is amazing. Will recommend.</p></div></div>
+      <div class="feedback-card"><div class="card-box"><img src="https://randomuser.me/api/portraits/women/6.jpg"><h4>Neha Patil</h4><div class="stars">★★★★★</div><p>Affordable learning for everyone. Great!</p></div></div>
+      <div class="feedback-card"><div class="card-box"><img src="https://randomuser.me/api/portraits/men/7.jpg"><h4>Aditya Rao</h4><div class="stars">★★★★☆</div><p>Highly interactive and easy to navigate.</p></div></div>
+      <div class="feedback-card"><div class="card-box"><img src="https://randomuser.me/api/portraits/women/8.jpg"><h4>Priya Nair</h4><div class="stars">★★★★★</div><p>Neat UI and effective course flow.</p></div></div>
+      <div class="feedback-card"><div class="card-box"><img src="https://randomuser.me/api/portraits/men/9.jpg"><h4>Mohammed Azhar</h4><div class="stars">★★★★☆</div><p>Great teaching style and structure.</p></div></div>
+      <div class="feedback-card"><div class="card-box"><img src="https://randomuser.me/api/portraits/men/10.jpg"><h4>Krishna Mehta</h4><div class="stars">★★★★★</div><p>Definitely worth ₹1. Highly recommended!</p></div></div>
+    </div>
+  </div>
+  </div></section>
+</section>
+
+  <!-- Dots -->
+  <div class="dots" id="dots"></div>
+</div>
+
+       <!-- footer section code-->
+    <footer>
+      <div class="footer-container">
+          <div class="skillmine">
+              <h2>EXCELSKILL</h2>
+              <!-- <div class="social-media">
+                <a href="#"><i class="bx bxl-linkedin"></i></a>
+                <a href="#"><i class="bx bxl-github"></i></a>
+                <a href="#"><i class="bx bxl-instagram"></i></a>
+              </div> -->
+              <p>Terms of Use</p>
+              <p>Privacy Policy</p>
+          </div>
+          <div class="about">
+              <h2>About</h2>
+              <ul> 
+                  <li>About Us</li>                  
+                  <li>Services</li>  
+                  <li>Pricing</li>               
+                  <li>Blog</li>
+                  <li>Contact</li>  
+               
+              </ul>
+          </div>
+          <div class="quick-links">
+              <h2>Quick Links</h2>
+              <ul>
+                  <li>Gallery</li>
+                  <li>Library</li>  
+                  <li>Partners</li>
+                  <li>Career</li>  
+                  <li>News & Blogs</li>
+              </ul>
+          </div>
+          <div class="support">
+              <h2>Support</h2>
+              <ul>
+                  <li>FAQs</li>  
+                  <li>Forum</li>
+                  <li>Sidemaps</li>  
+                  <li>Documentation</li>    
+                  <li>Contact</li>                 
+              </ul>
+          </div>
+      </div>
+      <p class="copyright">Copyright &copy; 2025 ExcelSkill. All rights reserved.</p>
+      <center><p>Contact: +91 9392457557</p></center>
+  </footer>
+     </section>
+     <script>
+      // categories section code
+       function toggleDropdown() {
+    const dropdown = document.getElementById("dropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  }
+
+  // Optional: close if clicked outside
+  document.addEventListener("click", function (e) {
+    const dropdown = document.getElementById("dropdown");
+    const button = document.querySelector(".explore-btn");
+    if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+      dropdown.style.display = "none";
+    }
+  });
+
+
+  // Student reviews code
+
+  const slider = document.getElementById("slider");
+  const dotsContainer = document.getElementById("dots");
+  const cards = document.querySelectorAll(".feedback-card");
+  const sliderContainer = document.getElementById("slider-container");
+
+  function getCardsPerSlide() {
+    const width = window.innerWidth;
+    if (width >= 992) return 4;
+    if (width >= 600) return 2;
+    return 1;
+  }
+
+  let cardsPerSlide = getCardsPerSlide();
+  let totalSlides = Math.ceil(cards.length / cardsPerSlide);
+  let currentSlide = 0;
+
+  function updateSlider() {
+    const slideWidth = slider.clientWidth / cardsPerSlide;
+    slider.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+    document.querySelectorAll(".dot").forEach((dot, index) => {
+      dot.classList.toggle("active", index === currentSlide);
+    });
+  }
+
+  function createDots() {
+    dotsContainer.innerHTML = "";
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement("span");
+      dot.classList.add("dot");
+      if (i === 0) dot.classList.add("active");
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  function setupSlider() {
+    cardsPerSlide = getCardsPerSlide();
+    totalSlides = Math.ceil(cards.length / cardsPerSlide);
+    createDots();
+    updateSlider();
+  }
+
+  // Auto-slide when mouse moves inside container
+  let autoSlideInterval;
+  sliderContainer.addEventListener("mouseenter", () => {
+    autoSlideInterval = setInterval(() => {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      updateSlider();
+    }, 1500);
+  });
+
+  sliderContainer.addEventListener("mouseleave", () => {
+    clearInterval(autoSlideInterval);
+  });
+
+  setupSlider();
+  window.addEventListener("resize", setupSlider);
+    </script>
+</body>
+</html>

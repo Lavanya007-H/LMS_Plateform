@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Student Dashboard</title>
+
+  <!-- Fonts / Icons / Charts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root{
+      --sidebar-width:240px;
+      --accent1:#A445B2;
+      --accent2:#D41872;
+      --bg:#f7f8fa;
+      --muted:#6b7280;
+      --card-bg:#fff;
+      --icon-gold:#fbc531;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:#111827;-webkit-font-smoothing:antialiased}
+
+    /* Layout */
+    .dashboard{display:flex;min-height:100vh}
+    .sidebar{width:var(--sidebar-width);background:#fff;box-shadow:2px 0 10px rgba(0,0,0,.06);padding:22px 16px;display:flex;flex-direction:column}
+    .logo{font-weight:600;color:var(--accent1);display:flex;align-items:center;gap:10px;font-size:18px;margin-bottom:18px}
+    .menu{list-style:none;padding:0;margin:0;flex:1}
+    .menu li{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:8px;color:#374151;cursor:pointer;margin-bottom:6px;transition:all .2s}
+    .menu li i{width:26px;text-align:center;color:var(--icon-gold)}
+    .menu li:hover,.menu li.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff}
+
+    .main{flex:1;padding:18px;overflow:auto}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .title{font-size:20px;font-weight:600}
+    .profile{display:flex;align-items:center;gap:12px}
+
+    /* Cards */
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+    .card{background:var(--card-bg);border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.06);display:flex;align-items:center;gap:12px;cursor:pointer;transition:transform .15s ease}
+    .card:hover{transform:translateY(-3px)}
+    .card .ico{font-size:26px;color:var(--icon-gold);width:46px;height:46px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.03),transparent)}
+    .card .txt h3{margin:0;font-size:18px}
+    .card .txt p{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+    /* Panels / grid */
+    .content{display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:start}
+    .panel{background:#fff;border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(0,0,0,.05)}
+    h3{margin:0 0 10px}
+
+    /* Tables / forms */
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid #f3f4f6;text-align:left;font-size:14px}
+    form .row{display:flex;gap:12px;margin-bottom:12px}
+    label{font-size:13px;color:var(--muted);margin-bottom:6px;display:block}
+    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e5e7eb;background:#fff;font-size:14px}
+    button{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer}
+    .small-btn{background:#fff;border:1px solid #e5e7eb;color:#374151;padding:6px 8px;border-radius:6px;cursor:pointer}
+
+    /* Progress bar */
+    .progress-wrap{background:#f3f4f6;border-radius:999px;overflow:hidden;height:10px}
+    .progress{height:10px;background:linear-gradient(90deg,var(--accent1),var(--accent2));width:0%}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:16px}
+    .modal .box{background:#fff;border-radius:12px;max-width:520px;width:100%;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    .box h4{margin:0 0 8px}
+
+    /* Responsive */
+    @media(max-width:1000px){.content{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.dashboard{padding-left:0}.sidebar{position:fixed;left:0;top:0;bottom:0;z-index:3}.main{margin-left:var(--sidebar-width)}}
+    @media(max-width:640px){.cards{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:flex-start;gap:8px}.main{margin-left:0}}
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" aria-label="Sidebar">
+      <div class="logo"><i class="fa-solid fa-graduation-cap"></i> LMS Portal</div>
+      <ul class="menu" id="sidebarMenu">
+        <li data-section="dashboard" class="active"><i class="fa-solid fa-table-columns"></i> Dashboard</li>
+        <li data-section="overview"><i class="fa-solid fa-file-lines"></i> Overview</li>
+        <li data-section="courses"><i class="fa-solid fa-book-open"></i> My Courses</li>
+        <li data-section="classes"><i class="fa-solid fa-calendar-days"></i> Upcoming Classes</li>
+        <li data-section="assignments"><i class="fa-solid fa-file-pen"></i> Assignments & Quizzes</li>
+        <li data-section="progress"><i class="fa-solid fa-chart-line"></i> Progress</li>
+        <li data-section="forum"><i class="fa-solid fa-comments"></i> Discussion</li>
+        <li data-section="results"><i class="fa-solid fa-square-poll-vertical"></i> Results</li>
+        <li data-section="videos"><i class="fa-solid fa-video"></i> Videos</li>
+        <li data-section="certificates"><i class="fa-solid fa-award"></i> Certificates</li>
+      </ul>
+      <div style="margin-top:auto;font-size:13px;color:var(--muted);padding:12px 8px">
+        <div><strong>Signed in as:</strong></div>
+        <div style="margin-top:6px">Student Demo</div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="topbar">
+        <div class="title">Student Dashboard</div>
+        <div class="profile">
+          <div style="text-align:right">
+            <div style="font-weight:600">Student Demo</div>
+            <div style="color:var(--muted);font-size:13px">student@lms.local</div>
+          </div>
+          <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(90deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600">SD</div>
+        </div>
+      </div>
+
+      <div id="mainContentArea">
+        <!-- Dashboard (default) -->
+        <section id="dashboardSection">
+          <div class="cards">
+            <div class="card" data-link="courses">
+              <div class="ico"><i class="fa-solid fa-book-open"></i></div>
+              <div class="txt"><h3 id="cardCourses">--</h3><p>My Courses</p></div>
+            </div>
+            <div class="card" data-link="classes">
+              <div class="ico"><i class="fa-solid fa-calendar-days"></i></div>
+              <div class="txt"><h3 id="cardClasses">--</h3><p>Upcoming Classes</p></div>
+            </div>
+            <div class="card" data-link="assignments">
+              <div class="ico"><i class="fa-solid fa-file-pen"></i></div>
+              <div class="txt"><h3 id="cardAssignments">--</h3><p>Pending Tasks</p></div>
+            </div>
+            <div class="card" data-link="progress">
+              <div class="ico"><i class="fa-solid fa-chart-line"></i></div>
+              <div class="txt"><h3 id="cardProgress">--%</h3><p>Avg Progress</p></div>
+            </div>
+          </div>
+
+          <div class="content">
+            <div class="panel">
+              <h3>Study Trend</h3>
+              <canvas id="studyChart" style="height:260px"></canvas>
+            </div>
+
+            <div class="panel">
+              <h3>Quick Actions</h3>
+              <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+                <button onclick="navigate('courses')"><i class="fa-solid fa-book-open"></i> Go to Courses</button>
+                <button class="small-btn" onclick="navigate('assignments')"><i class="fa-solid fa-file-pen"></i> View Assignments</button>
+                <button class="small-btn" onclick="navigate('videos')"><i class="fa-solid fa-video"></i> Watch Videos</button>
+                <button class="small-btn" onclick="openCalendar()"><i class="fa-solid fa-calendar-days"></i> Open Calendar</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="box">
+      <h4 id="modalTitle">Details</h4>
+      <div id="modalBody" style="color:var(--muted);font-size:14px"></div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+        <button class="small-btn" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**************
+     * Local DB
+     **************/
+    const STORAGE_KEY = "student_dashboard_data_v1";
+    const defaultData = {
+      courses: [
+        { id:idGen(), title:"Web Dev Bootcamp", desc:"HTML, CSS, JS", progress:72, next:"Module 8: Flexbox", teacher:"Anita Rao" },
+        { id:idGen(), title:"Data Science Intro", desc:"Python, Pandas", progress:46, next:"Pandas indexing", teacher:"Rahul Singh" },
+        { id:idGen(), title:"React Basics", desc:"Components, Props, State", progress:28, next:"State & Effects", teacher:"Meera Iyer" }
+      ],
+      classes: [
+        { id:idGen(), title:"Web Dev - Flexbox Deep Dive", date:"2025-08-16", time:"10:00", link:"https://meet.example/wd1" },
+        { id:idGen(), title:"Data Science - Pandas Lab", date:"2025-08-18", time:"14:00", link:"https://meet.example/ds1" }
+      ],
+      assignments: [
+        { id:idGen(), course:"Web Dev Bootcamp", title:"Build responsive navbar", due:"2025-08-20", status:"pending" },
+        { id:idGen(), course:"Data Science Intro", title:"Clean CSV dataset", due:"2025-08-22", status:"pending" },
+        { id:idGen(), course:"React Basics", title:"Todo app with hooks", due:"2025-08-25", status:"done" }
+      ],
+      quizzes: [
+        { id:idGen(), course:"Web Dev Bootcamp", title:"HTML Basics Quiz", score:null, total:10, due:"2025-08-21" },
+        { id:idGen(), course:"Data Science Intro", title:"Python Fundamentals Quiz", score:8, total:10, due:null }
+      ],
+      forum: [
+        { id:idGen(), author:"Priya", topic:"Tips for Flexbox", body:"What helped you memorize properties?", ts:Date.now()-86400000 },
+        { id:idGen(), author:"Karan", topic:"Pandas vs NumPy", body:"When to use which?", ts:Date.now()-3600000 }
+      ],
+      results: [
+        { id:idGen(), course:"Web Dev Bootcamp", grade:"A-", percent:88 },
+        { id:idGen(), course:"Data Science Intro", grade:"B+", percent:82 }
+      ],
+      videos: [
+        { id:idGen(), course:"Web Dev Bootcamp", title:"Semantic HTML", dur:"12:21" },
+        { id:idGen(), course:"Web Dev Bootcamp", title:"Flexbox Crash", dur:"18:45" },
+        { id:idGen(), course:"Data Science Intro", title:"Intro to Pandas", dur:"22:10" },
+        { id:idGen(), course:"React Basics", title:"Components 101", dur:"14:37" }
+      ],
+      certificates: [
+        { id:idGen(), course:"Git & GitHub Essentials", issue:"2025-07-02", id:idGen(), idCode:"CERT-7G21-ABX" }
+      ],
+      notices: [
+        { id:idGen(), title:"📢 Special Exams Spring 2025", detail:"Extra attempt window on Sep 10–12." },
+        { id:idGen(), title:"⏳ Admission Extension", detail:"Last date extended to Aug 30." },
+        { id:idGen(), title:"🎓 Convocation", detail:"Convocation on Oct 15, registrations open." }
+      ]
+    };
+    function idGen(){ return 'id_' + Math.random().toString(36).slice(2,9) }
+    function loadData(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw){ localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData)); return JSON.parse(localStorage.getItem(STORAGE_KEY)); }
+      return JSON.parse(raw);
+    }
+    function saveData(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+    let data = loadData();
+
+    /****************
+     * Navigation
+     ****************/
+    const menuEls = document.querySelectorAll('#sidebarMenu li');
+    menuEls.forEach(li=>{
+      li.addEventListener('click',()=>{
+        setActiveMenu(li.dataset.section);
+        navigate(li.dataset.section);
+      });
+    });
+
+    function setActiveMenu(section){
+      document.querySelectorAll('#sidebarMenu li').forEach(x=>x.classList.remove('active'));
+      const target = document.querySelector(`#sidebarMenu li[data-section="${section}"]`);
+      if(target) target.classList.add('active');
+    }
+
+    function navigate(section){
+      const main = document.getElementById('mainContentArea');
+
+      if(section==='dashboard'){
+        main.innerHTML = document.getElementById('dashboardSection').outerHTML;
+        bindDashboardCardLinks();
+        updateDashboardCards();
+        renderStudyChart();
+      } else if(section==='overview'){
+        main.innerHTML = renderOverview();
+      } else if(section==='courses'){
+        main.innerHTML = renderCourses();
+        attachCourseHandlers(); // now defined (no-op placeholder)
+      } else if(section==='classes'){
+        main.innerHTML = renderClasses();
+      } else if(section==='assignments'){
+        main.innerHTML = renderAssignments();
+        attachAssignmentHandlers();
+      } else if(section==='progress'){
+        main.innerHTML = renderProgress();
+      } else if(section==='forum'){
+        main.innerHTML = renderForum();
+        attachForumHandlers();
+      } else if(section==='results'){
+        main.innerHTML = renderResults();
+      } else if(section==='videos'){
+        main.innerHTML = renderVideos();
+        attachVideoHandlers();
+      } else if(section==='certificates'){
+        main.innerHTML = renderCertificates();
+      }
+
+      // make any [data-link] cards inside newly injected content clickable
+      bindDashboardCardLinks();
+      // keep cards counters fresh when present
+      updateDashboardCards();
+      // keep sidebar highlight in sync (for card-based navigation)
+      setActiveMenu(section);
+    }
+
+    /****************
+     * Dashboard
+     ****************/
+    let studyChartInstance = null;
+    function bindDashboardCardLinks(){
+      document.querySelectorAll('.card[data-link]').forEach(c=>{
+        c.onclick = ()=>{ navigate(c.dataset.link); };
+      });
+    }
+    function updateDashboardCards(){
+      const c1=document.getElementById('cardCourses'); if(c1) c1.textContent=data.courses.length;
+      const c2=document.getElementById('cardClasses'); if(c2) c2.textContent=data.classes.length;
+      const pend = data.assignments.filter(a=>a.status!=='done').length + data.quizzes.filter(q=>q.score===null).length;
+      const c3=document.getElementById('cardAssignments'); if(c3) c3.textContent=pend;
+      const avg = Math.round((data.courses.reduce((s,c)=>s+(c.progress||0),0)/(data.courses.length||1)));
+      const c4=document.getElementById('cardProgress'); if(c4) c4.textContent=avg+'%';
+    }
+    function renderStudyChart(){
+      const ctx = document.getElementById('studyChart')?.getContext('2d');
+      if(!ctx) return;
+      if(studyChartInstance) studyChartInstance.destroy();
+      const labels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      const hours = [1.5,2.0,1.0,2.5,1.2,0.8,1.1];
+      studyChartInstance = new Chart(ctx,{
+        type:'bar',
+        data:{labels,datasets:[{label:'Study hours (mock)',data:hours,backgroundColor:['#A445B2','#4a90e2','#4CAF50','#D41872','#A445B2','#4a90e2','#4CAF50']}]},
+        options:{responsive:true,plugins:{legend:{display:false}}}
+      });
+    }
+
+    /****************
+     * Sections
+     ****************/
+    function renderOverview(){
+      const avg = Math.round(data.courses.reduce((s,c)=>s+c.progress,0)/data.courses.length);
+      return `
+        <section class="panel">
+          <h3>Overview</h3>
+          <div class="cards" style="margin-top:10px">
+            <div class="card" data-link="courses"><div class="ico"><i class="fa-solid fa-book-open"></i></div><div class="txt"><h3>${data.courses.length}</h3><p>Enrolled Courses</p></div></div>
+            <div class="card" data-link="assignments"><div class="ico"><i class="fa-solid fa-file-pen"></i></div><div class="txt"><h3>${data.assignments.filter(a=>a.status!=='done').length}</h3><p>Pending Assignments</p></div></div>
+            <div class="card" data-link="results"><div class="ico"><i class="fa-solid fa-square-poll-vertical"></i></div><div class="txt"><h3>${avg}%</h3><p>Average Progress</p></div></div>
+            <div class="card" data-link="certificates"><div class="ico"><i class="fa-solid fa-award"></i></div><div class="txt"><h3>${data.certificates.length}</h3><p>Certificates</p></div></div>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderCourses(){
+      const rows = data.courses.map(c=>`
+        <tr>
+          <td><strong>${escape(c.title)}</strong><div style="color:var(--muted);font-size:12px">${escape(c.desc)}</div></td>
+          <td>${escape(c.teacher)}</td>
+          <td>
+            <div class="progress-wrap"><div class="progress" style="width:${c.progress}%;"></div></div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">${c.progress}% • Next: ${escape(c.next)}</div>
+          </td>
+          <td class="actions">
+            <button class="small-btn" onclick="resumeCourse('${c.id}')">Resume</button>
+            <button class="small-btn" onclick="openCourseInfo('${c.id}')">Info</button>
+          </td>
+        </tr>
+      `).join('');
+      return `
+        <section class="panel">
+          <h3>My Courses</h3>
+          <table><thead><tr><th>Course</th><th>Teacher</th><th>Progress</th><th>Actions</th></tr></thead>
+            <tbody>${rows}</tbody></table>
+        </section>
+      `;
+    }
+    // no-op now, kept to match structure / avoid errors
+    function attachCourseHandlers(){}
+
+    window.resumeCourse = (id)=>{ const c=data.courses.find(x=>x.id===id); if(c) showModal('Resuming', `Opening <strong>${escape(c.title)}</strong> at <em>${escape(c.next)}</em>.`); };
+    window.openCourseInfo = (id)=>{ const c=data.courses.find(x=>x.id===id); if(!c) return; showModal('Course Info', `<strong>${escape(c.title)}</strong><br>${escape(c.desc)}<br>Teacher: ${escape(c.teacher)}.`); };
+
+    function renderClasses(){
+      const items = data.classes.map(c=>`
+        <div style="padding:8px;border-bottom:1px solid #f3f4f6">
+          <strong>${escape(c.title)}</strong>
+          <div style="color:var(--muted);font-size:13px">${c.date} ${c.time} • <a href="${escape(c.link)}" target="_blank">Join</a></div>
+        </div>
+      `).join('');
+      return `<section class="panel"><h3>Upcoming Classes</h3>${items || '<div style="color:var(--muted)">No classes scheduled.</div>'}</section>`;
+    }
+
+    function renderAssignments(){
+      const assignRows = data.assignments.map(a=>`
+        <tr>
+          <td><strong>${escape(a.title)}</strong><div style="color:var(--muted);font-size:12px">${escape(a.course)}</div></td>
+          <td>${a.due || '—'}</td>
+          <td>${a.status==='done' ? '✅ Done' : '⏳ Pending'}</td>
+          <td><button class="small-btn" onclick="toggleAssignment('${a.id}')">${a.status==='done'?'Mark Pending':'Mark Done'}</button></td>
+        </tr>
+      `).join('');
+
+      /* FIXED: removed stray quote that caused a JS parse error */
+      const quizRows = data.quizzes.map(q=>`
+        <tr>
+          <td><strong>${escape(q.title)}</strong><div style="color:var(--muted);font-size:12px">${escape(q.course)}</div></td>
+          <td>${q.due || '—'}</td>
+          <td>${q.score===null ? 'Not Attempted' : q.score+'/'+q.total}</td>
+          <td><button class="small-btn" onclick="attemptQuiz('${q.id}')">${q.score===null?'Attempt':'Review'}</button></td>
+        </tr>
+      `).join('');
+
+      return `
+        <section class="panel">
+          <h3>Assignments</h3>
+          <table><thead><tr><th>Assignment</th><th>Due</th><th>Status</th><th>Action</th></tr></thead><tbody>${assignRows}</tbody></table>
+          <hr style="margin:14px 0"/>
+          <h3 style="margin-top:0">Quizzes</h3>
+          <table><thead><tr><th>Quiz</th><th>Due</th><th>Status</th><th>Action</th></tr></thead><tbody>${quizRows}</tbody></table>
+        </section>
+      `;
+    }
+    function attachAssignmentHandlers(){}
+
+    window.toggleAssignment = (id)=>{
+      const a=data.assignments.find(x=>x.id===id); if(!a) return;
+      a.status = a.status==='done' ? 'pending' : 'done'; saveData(); navigate('assignments');
+    };
+    window.attemptQuiz = (id)=>{
+      const q=data.quizzes.find(x=>x.id===id); if(!q) return;
+      if(q.score===null){
+        q.score = Math.floor(Math.random()*(q.total+1));
+        saveData();
+        showModal('Quiz Submitted', `You scored <strong>${q.score}/${q.total}</strong> on <em>${escape(q.title)}</em>.`);
+        navigate('assignments');
+      }else{
+        showModal('Quiz Review', `<strong>${escape(q.title)}</strong><br>Score: ${q.score}/${q.total}`);
+      }
+    };
+
+    function renderProgress(){
+      const rows = data.courses.map(c=>`
+        <tr>
+          <td><strong>${escape(c.title)}</strong><div style="color:var(--muted);font-size:12px">${escape(c.desc)}</div></td>
+          <td>${c.progress}%</td>
+          <td><div class="progress-wrap"><div class="progress" style="width:${c.progress}%"></div></div></td>
+        </tr>
+      `).join('');
+      return `
+        <section class="panel">
+          <h3>Progress</h3>
+          <table><thead><tr><th>Course</th><th>Percent</th><th>Bar</th></tr></thead><tbody>${rows}</tbody></table>
+        </section>
+      `;
+    }
+
+    function renderForum(){
+      const posts = data.forum.sort((a,b)=>b.ts-a.ts).map(p=>`
+        <div style="padding:10px;border:1px solid #f1f2f6;border-radius:10px;margin-bottom:10px;background:#fff">
+          <div style="display:flex;justify-content:space-between">
+            <strong>${escape(p.topic)}</strong>
+            <span style="color:var(--muted);font-size:12px">${new Date(p.ts).toLocaleString()}</span>
+          </div>
+          <div style="color:var(--muted);margin-top:6px">${escape(p.body)}</div>
+          <div style="font-size:12px;margin-top:6px">— ${escape(p.author)}</div>
+        </div>
+      `).join('');
+      return `
+        <section class="panel">
+          <h3>Discussion</h3>
+          <form id="postForm" style="margin:10px 0 16px">
+            <div class="row">
+              <div style="flex:1"><label>Topic</label><input id="postTopic" placeholder="e.g. How to remember Flexbox?"></div>
+              <div style="flex:1"><label>Your Name</label><input id="postAuthor" placeholder="Your name"></div>
+            </div>
+            <div class="row"><div style="flex:1"><label>Message</label><textarea id="postBody" rows="3"></textarea></div></div>
+            <div><button type="submit">Post</button></div>
+          </form>
+          <div id="forumList">${posts || '<div style="color:var(--muted)">No posts yet.</div>'}</div>
+        </section>
+      `;
+    }
+    function attachForumHandlers(){
+      const f=document.getElementById('postForm'); if(!f) return;
+      f.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        const topic=document.getElementById('postTopic').value.trim();
+        const author=document.getElementById('postAuthor').value.trim() || 'Anonymous';
+        const body=document.getElementById('postBody').value.trim();
+        if(!topic||!body){ alert('Please add topic and message'); return; }
+        data.forum.push({id:idGen(),author,topic,body,ts:Date.now()}); saveData(); navigate('forum');
+      });
+    }
+
+    function renderResults(){
+      const rows = data.results.map(r=>`
+        <tr><td>${escape(r.course)}</td><td>${r.percent}%</td><td>${r.grade}</td></tr>
+      `).join('');
+      return `<section class="panel"><h3>Results</h3><table><thead><tr><th>Course</th><th>Percent</th><th>Grade</th></tr></thead><tbody>${rows}</tbody></table></section>`;
+    }
+
+    function renderVideos(){
+      const options = [...new Set(data.videos.map(v=>v.course))].map(c=>`<option>${escape(c)}</option>`).join('');
+      const items = data.videos.map(v=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid #f3f4f6">
+          <div><strong>${escape(v.title)}</strong><div style="color:var(--muted);font-size:12px">${escape(v.course)} • ${v.dur}</div></div>
+          <div><button class="small-btn" onclick="playVideo('${v.id}')">Play</button></div>
+        </div>
+      `).join('');
+      return `
+        <section class="panel">
+          <h3>Videos</h3>
+          <div class="row">
+            <div style="flex:1"><label>Filter by Course</label><select id="videoFilter"><option value="all">All</option>${options}</select></div>
+            <div style="flex:1"><label>&nbsp;</label><button class="small-btn" onclick="resetVideoFilter()">Reset</button></div>
+          </div>
+          <div id="videoList">${items}</div>
+        </section>
+      `;
+    }
+    function attachVideoHandlers(){
+      const sel=document.getElementById('videoFilter'); if(!sel) return;
+      sel.addEventListener('change',()=>{
+        const val=sel.value;
+        const list=document.getElementById('videoList');
+        const filtered = data.videos.filter(v=> val==='all' || v.course===val);
+        list.innerHTML = filtered.map(v=>`
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;border-bottom:1px solid #f3f4f6">
+            <div><strong>${escape(v.title)}</strong><div style="color:var(--muted);font-size:12px">${escape(v.course)} • ${v.dur}</div></div>
+            <div><button class="small-btn" onclick="playVideo('${v.id}')">Play</button></div>
+          </div>`).join('');
+      });
+    }
+    window.resetVideoFilter=()=>{ const sel=document.getElementById('videoFilter'); if(sel){ sel.value='all'; sel.dispatchEvent(new Event('change')); } };
+    window.playVideo=(id)=>{ const v=data.videos.find(x=>x.id===id); if(v) showModal('Playing Video', `<strong>${escape(v.title)}</strong><br>${escape(v.course)} • ${v.dur}<br><br><em>(Demo)</em>`); };
+
+    function renderCertificates(){
+      const rows = data.certificates.map(c=>`
+        <tr>
+          <td>${escape(c.course)}</td><td>${c.issue}</td><td>${escape(c.idCode)}</td>
+          <td><button class="small-btn" onclick="downloadCert('${c.id}')">Download</button></td>
+        </tr>
+      `).join('');
+      return `<section class="panel"><h3>Certificates</h3><table><thead><tr><th>Course</th><th>Issued</th><th>ID</th><th>Action</th></tr></thead><tbody>${rows || '<tr><td colspan="4">No certificates yet.</td></tr>'}</tbody></table></section>`;
+    }
+    window.downloadCert=(id)=>{ const c=data.certificates.find(x=>x.id===id); if(c) showModal('Certificate', `Downloading certificate: <strong>${escape(c.course)}</strong><br>ID: ${escape(c.idCode)}<br><br><em>(Demo)</em>`); };
+
+    /****************
+     * Calendar & Notices
+     ****************/
+    function openCalendar(){
+      const now = new Date();
+      openCalendarFor(now.getFullYear(), now.getMonth());
+    }
+    function openCalendarFor(year, monthIdx){
+      const first = new Date(year, monthIdx, 1);
+      const last = new Date(year, monthIdx+1, 0);
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      let grid = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:12px">';
+      days.forEach(d=>grid+=`<div style="text-align:center;color:var(--muted)">${d}</div>`);
+      for(let i=0;i<first.getDay();i++) grid+='<div></div>';
+      for(let d=1; d<=last.getDate(); d++){
+        grid+=`<div style="text-align:center;padding:6px;border:1px solid #f1f2f6;border-radius:8px;cursor:pointer" onclick="selectDate('${year}-${String(monthIdx+1).padStart(2,'0')}-${String(d).padStart(2,'0')}')">${d}</div>`;
+      }
+      grid+='</div>';
+      const header = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <button class="small-btn" onclick="prevMonth(${year},${monthIdx})">&larr;</button>
+          <strong>${first.toLocaleString('default',{month:'long'})} ${year}</strong>
+          <button class="small-btn" onclick="nextMonth(${year},${monthIdx})">&rarr;</button>
+        </div>`;
+      showModal('Calendar', header + grid);
+    }
+    window.prevMonth=(y,m)=> openCalendarFor(m===0?y-1:y, m===0?11:m-1);
+    window.nextMonth=(y,m)=> openCalendarFor(m===11?y+1:y, m===11?0:m+1);
+    window.selectDate=(iso)=>{ showModal('Selected Date', `You picked <strong>${iso}</strong>.`); };
+
+    /****************
+     * Modal helpers
+     ****************/
+    function showModal(title, html){
+      const m=document.getElementById('modal'); const t=document.getElementById('modalTitle'); const b=document.getElementById('modalBody');
+      t.textContent=title; b.innerHTML=html; m.style.display='flex';
+    }
+    function closeModal(){ document.getElementById('modal').style.display='none'; }
+    window.closeModal = closeModal;
+
+    /****************
+     * Utilities
+     ****************/
+    function escape(s){return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);}
+
+    /****************
+     * Init
+     ****************/
+    function initialWire(){
+      bindDashboardCardLinks();
+      renderStudyChart();
+      updateDashboardCards();
+    }
+    initialWire();
+
+    // expose navigate globally for quick action buttons
+    window.navigate = navigate;
+  </script>
+</body>
+</html>
